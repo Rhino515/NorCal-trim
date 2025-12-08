@@ -356,14 +356,14 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
       document.getElementById('grams').value = trackerTotal;
       alert("Imported " + trackerTotal + "g from Trim Tracker.");
     } else {
-      alert("No trim tracker total found for today.");
+      alert("No se encontró un total del Trim Tracker para hoy.");
     }
   });
 </script>
 
 <script>
   function clearCurrentPayPeriod() {
-    const confirmMsg = "Are you sure you want to clear all entries from the current pay period?";
+    const confirmMsg = ¿Estás seguro de que deseas borrar todas las entradas del período de pago actual?;
     if (!confirm(confirmMsg)) return;
 
     const period = getCurrentPayPeriod();
@@ -386,7 +386,7 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
   function downloadCSV() {
     const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
     if (history.length === 0) {
-      alert("No data to export.");
+      alert(No hay datos para exportar.);
       return;
     }
 
@@ -441,11 +441,11 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
       }
 
       if (imported.length === 0 && errorCount > 0) {
-        alert("Invalid or empty CSV file. No valid entries imported.");
+        alert("Archivo CSV inválido o vacío. No se importaron entradas válidas.");
         return;
       }
       if (imported.length === 0 && errorCount === 0) {
-        alert("Empty CSV file.");
+        alert("Archivo CSV vacío.");
         return;
       }
 
@@ -522,7 +522,7 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
         <td contenteditable="true" onblur="editDate(${index}, this)">${entry.date}</td>
         <td contenteditable="true" onblur="editGrams(${index}, this)">${entry.grams}</td>
         <td>$${parseFloat(entry.bonusPay).toFixed(2)}</td>
-        <td><button onclick="deleteEntry(${index})" class="delete-button">Delete</button></td>`;
+        <td><button onclick="deleteEntry(${index})" class="delete-button">Eliminar</button></td>`;
       tbody.appendChild(row);
       totalBonusPay += parseFloat(entry.bonusPay || 0);
     });
