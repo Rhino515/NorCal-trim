@@ -286,11 +286,14 @@
     }
 
     function deleteEntry(index) {
-      const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
-      history.splice(index, 1);
-      localStorage.setItem('trimHistory', JSON.stringify(history));
-      updateSessionTable();
-    }
+  const confirmMsg = "¿Estás seguro de que deseas eliminar esta entrada?";
+  if (!confirm(confirmMsg)) return;
+
+  let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+  history.splice(index, 1);
+  localStorage.setItem('trimHistory', JSON.stringify(history));
+  updateSessionTable();
+}
 </script>
 <script>
 // Auto pay period starting from April 14, 2025 (Monday)
