@@ -170,7 +170,15 @@
 <div style="margin-top: 0.6em;">
   <button onclick="clearCurrentPayPeriod()" style="background-color:red;color:white;padding: 0.5em 1em;border:none;border-radius:4px;cursor:pointer;">Borrar el período de pago actual</button>
 </div>
-function clearAllPastPayPeriods() {
+<div style="margin-top: 0.6em;">
+  <button onclick="clearAllPastPayPeriods()" 
+    style="background-color:#b30000;color:white;padding: 0.5em 1em;
+    border:none;border-radius:4px;cursor:pointer;">
+    Borrar Todos los Períodos de Pago Pasados
+  </button>
+</div>
+  <script>
+  function clearAllPastPayPeriods() {
     const confirmMsg = "¿Estás seguro de que quieres borrar TODOS los períodos de pago pasados? Esto no se puede deshacer.";
     if (!confirm(confirmMsg)) return;
 
