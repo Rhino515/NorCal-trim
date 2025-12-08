@@ -1,13 +1,9 @@
-
 const CACHE_NAME = 'trim-app-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/index-es.html',
   '/trim-tracker.html',
-  '/trim-tracker-es.html',
   '/help.html',
-  '/help-es.html',
   '/manifest.json',
   '/norcal_icon.png'
 ];
