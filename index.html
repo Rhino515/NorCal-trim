@@ -160,19 +160,19 @@
 
 <div style="margin-top: 0.6em;">
   <input accept=".csv" id="csvInput" onchange="importCSV(event)" style="display:none" type="file"/>
-  <button onclick="document.getElementById('csvInput').click()" style="background-color:#28a745;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Import CSV</button>
+  <button onclick="document.getElementById('csvInput').click()" style="background-color:#28a745;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Importar CSV</button>
 </div>
 
 <div style="margin-top: 0.6em;">
-  <button onclick="downloadCSV()" style="background-color:green;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Export CSV</button>
+  <button onclick="downloadCSV()" style="background-color:green;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Exportar CSV</button>
 </div>
 
 <div style="margin-top: 0.6em;">
-  <button onclick="clearCurrentPayPeriod()" style="background-color:red;color:white;padding: 0.5em 1em;border:none;border-radius:4px;cursor:pointer;">Clear Current Pay Period</button>
+  <button onclick="clearCurrentPayPeriod()" style="background-color:red;color:white;padding: 0.5em 1em;border:none;border-radius:4px;cursor:pointer;">Borrar el período de pago actual</button>
 </div>
 
 <div style="margin-top: 1.2em; border-top: 1px solid #444; padding-top: 1em;">
-  <h2 onclick="togglePayCalc()" style="color:#0f0; cursor:pointer;">Hourly &amp; Pay Averages ▼</h2>
+  <h2 onclick="togglePayCalc()" style="color:#0f0; cursor:pointer;">Promedios de Pago por Hora ▼</h2>
   <div id="payCalcSection" style="display:none;">
     <p>Ingresa tu pago por hora y las horas trabajadas, luego elige un rango de fechas:</p>
     <label>Pago por hora: <input id="hourlyRate" step="0.01" type="number"/></label><br/>
