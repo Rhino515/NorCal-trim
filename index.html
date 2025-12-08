@@ -280,11 +280,14 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
   }
 
   function deleteEntry(index) {
-    const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
-    history.splice(index, 1);
-    localStorage.setItem('trimHistory', JSON.stringify(history));
-    updateSessionTable();
-  }
+  const confirmMsg = "¿Estás seguro de que deseas eliminar esta entrada?";
+  if (!confirm(confirmMsg)) return;
+
+  let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+  history.splice(index, 1);
+  localStorage.setItem('trimHistory', JSON.stringify(history));
+  updateSessionTable();
+}
 </script>
 
 <script>
