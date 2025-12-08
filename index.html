@@ -212,7 +212,7 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
   function calculate() {
     const grams = parseFloat(document.getElementById('grams').value);
     if (isNaN(grams) || grams <= 0) {
-      document.getElementById('result').innerText = 'Please enter a valid number of grams.';
+      document.getElementById('result').innerText = 'Por favor ingresa una cantidad válida de gramos.';
       return;
     }
     const bonusPay = calculateBonus(grams);
