@@ -170,7 +170,33 @@
 <div style="margin-top: 0.6em;">
   <button onclick="clearCurrentPayPeriod()" style="background-color:red;color:white;padding: 0.5em 1em;border:none;border-radius:4px;cursor:pointer;">Borrar el período de pago actual</button>
 </div>
+function clearAllPastPayPeriods() {
+    const confirmMsg = "¿Estás seguro de que quieres borrar TODOS los períodos de pago pasados? Esto no se puede deshacer.";
+    if (!confirm(confirmMsg)) return;
 
+    let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+
+    // Get the current period range
+    const current = getCurrentPayPeriod();
+    const currentStart = new Date(current.start);
+    const currentEnd = new Date(current.end);
+    currentEnd.setHours(23, 59, 59, 999);
+
+    // Keep only entries INSIDE the current period
+    history = history.filter(entry => {
+      const d = new Date(entry.date);
+      d.setHours(0, 0, 0, 0);
+      return d >= currentStart && d <= currentEnd;
+    });
+
+    // Save the cleaned history
+    localStorage.setItem('trimHistory', JSON.stringify(history));
+
+    // Refresh table
+    updateSessionTable();
+  }
+</script>
+</div>
 <div style="margin-top: 1.2em; border-top: 1px solid #444; padding-top: 1em;">
   <h2 onclick="togglePayCalc()" style="color:#0f0; cursor:pointer;">Promedios de Pago por Hora ▼</h2>
   <div id="payCalcSection" style="display:none;">
