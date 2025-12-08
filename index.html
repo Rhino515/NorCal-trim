@@ -121,17 +121,17 @@
 <body>
 
 <img alt="NorCal Logo" src="norcal_icon.png"/>
-<p>Enter total grams trimmed:</p>
+<p>Ingresa el total de gramos cortados:</p>
 <input id="grams" placeholder="e.g. 1200" type="number"/>
 <br/>
-<button id="import-tracker-total">Add Today’s Trim Tracker Total</button>
+<button id="import-tracker-total">Agregar el Total de Hoy del Trim Tracker</button>
 <br/>
-<button onclick="calculate()">Calculate</button>
+<button onclick="calculate()">Calcular</button>
 <p id="result"></p>
 
 <div class="install-links">
-  <a href="trim-tracker.html">Go to Trim Tracker</a>
-  <a class="nav-button" href="help.html">How to Use the App</a>
+  <a href="trim-tracker.html">Ir al Trim Tracker</a>
+  <a class="nav-button" href="help.html">Cómo Usar la App</a>
 </div>
 
 <div style="margin-top: 0.6em; color: #ccc; font-size: 0.95em; max-width: 600px; margin-left: auto; margin-right: auto;">
@@ -174,26 +174,26 @@
 <div style="margin-top: 1.2em; border-top: 1px solid #444; padding-top: 1em;">
   <h2 onclick="togglePayCalc()" style="color:#0f0; cursor:pointer;">Hourly &amp; Pay Averages ▼</h2>
   <div id="payCalcSection" style="display:none;">
-    <p>Enter your hourly pay and hours worked, then choose a date range:</p>
-    <label>Hourly Rate: <input id="hourlyRate" step="0.01" type="number"/></label><br/>
-    <label>Overtime Hours: <input id="overtimeHours" step="0.1" type="number"/></label><br/>
-    <label>Total Hours Worked: <input id="totalHours" step="0.1" type="number"/></label><br/>
-    <label>Start Date: <input id="startDate" type="date"/></label><br/>
-    <label>End Date: <input id="endDate" type="date"/></label><br/>
+    <p>Ingresa tu pago por hora y las horas trabajadas, luego elige un rango de fechas:</p>
+    <label>Pago por hora: <input id="hourlyRate" step="0.01" type="number"/></label><br/>
+    <label>Horas extra: <input id="overtimeHours" step="0.1" type="number"/></label><br/>
+    <label>Horas trabajadas en total: <input id="totalHours" step="0.1" type="number"/></label><br/>
+    <label>Fecha de inicio: <input id="startDate" type="date"/></label><br/>
+    <label>Fecha de fin: <input id="endDate" type="date"/></label><br/>
     <button onclick="calculateAverages()">Calculate Averages</button>
     <div id="averageResults" style="margin-top: 0.6em; text-align: left;"></div>
   </div>
 </div>
 
 <div style="margin-top: 4em; padding-top: 2em; border-top: 1px solid #444;">
-  <h2 style="color: #0f0;">About the Creator</h2>
+  <h2 style="color: #0f0;">Acerca del Creador</h2>
   <p style="max-width: 600px; margin: 0 auto; font-size: 1em; line-height: 1.6;">
-    Hi, my name is Andrew, and I work as a professional trimmer at NorCal Cannabis.
-    I created the NorCal Trim Calculator to help simplify bonus pay calculations and make it easier for trimmers
-    to track their daily progress.
-    <br/><br/>
-    This tool was designed to be practical, user-friendly, and efficient — helping workers stay organized and informed.
-    My goal is to support the trimming community with simple tech solutions that make a real difference on the job.
+    Hola, mi nombre es Andrew y trabajo como recortador profesional en NorCal Cannabis.
+Creé la Calculadora de Trim de NorCal para ayudar a simplificar los cálculos del bono y facilitarles a los recortadores
+el seguimiento de su progreso diario.
+<br/><br/>
+Esta herramienta fue diseñada para ser práctica, fácil de usar y eficiente — ayudando a los trabajadores a mantenerse organizados e informados.
+Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas simples que realmente hagan la diferencia en el trabajo.
   </p>
 </div>
 
