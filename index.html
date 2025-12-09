@@ -421,11 +421,27 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
 
 <script>
   function downloadCSV() {
-    const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
-    if (history.length === 0) {
-      alert(No hay datos para exportar.);
+  const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+  if (history.length === 0) {
+      alert("No hay datos para exportar.");
       return;
-    }
+  }
+
+  const headers = ["Date", "Grams", "Bonus"];
+  const rows = history.map(entry => [entry.date, entry.grams, parseFloat(entry.bonusPay || 0).toFixed(2)]);
+
+  let csvContent = "data:text/csv;charset=utf-8,"
+    + headers.join(",") + "\n"
+    + rows.map(e => e.join(",")).join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "norcal_trim_data.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
     const headers = ["Date", "Grams", "Bonus"];
     const rows = history.map(entry => [entry.date, entry.grams, parseFloat(entry.bonusPay || 0).toFixed(2)]);
