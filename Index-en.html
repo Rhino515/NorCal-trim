@@ -213,7 +213,7 @@
     <label>Horas trabajadas en total: <input id="totalHours" step="0.1" type="number"/></label><br/>
     <label>Fecha de inicio: <input id="startDate" type="date"/></label><br/>
     <label>Fecha de fin: <input id="endDate" type="date"/></label><br/>
-    <button onclick="calculateAverages()">Calculate Averages</button>
+    <button onclick="calculateAverages()">Calcular promedios</button>
     <div id="averageResults" style="margin-top: 0.6em; text-align: left;"></div>
   </div>
 </div>
@@ -293,6 +293,7 @@
     lastCalculated = null;
   }
 
+  // 🔁 Translated calculateAverages() to Mexican Spanish
   function calculateAverages() {
     const hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
     const totalHours = parseFloat(document.getElementById("totalHours").value);
@@ -301,7 +302,7 @@
     const endDate = new Date(document.getElementById("endDate").value);
 
     if (isNaN(hourlyRate) || isNaN(totalHours) || isNaN(startDate) || isNaN(endDate)) {
-      alert("Please fill out all fields.");
+      alert("Por favor llena todos los campos.");
       return;
     }
 
@@ -323,15 +324,15 @@
     let dayDiff = Math.max(1, (endDate - startDate) / (1000 * 60 * 60 * 24) + 1);
 
     let results = `
-      <p><strong>Total Bonus Pay:</strong> $${bonusTotal.toFixed(2)}</p>
-      <p><strong>Regular Pay:</strong> $${regularPay.toFixed(2)}</p>
-      <p><strong>Overtime Pay:</strong> $${overtimePay.toFixed(2)}</p>
-      <p><strong>Total Hourly Pay:</strong> $${hourlyTotal.toFixed(2)}</p>
-      <p><strong>Total Pay:</strong> $${totalPay.toFixed(2)}</p>
-      <p><strong>Average Daily Pay:</strong> $${(totalPay / dayDiff).toFixed(2)}</p>
-      <p><strong>Average Weekly:</strong> $${(totalPay / dayDiff * 7).toFixed(2)}</p>
-      <p><strong>Average Bi-Weekly:</strong> $${(totalPay / dayDiff * 14).toFixed(2)}</p>
-      <p><strong>Average Hourly Rate (with bonus):</strong> $${(totalHours + overtimeHours > 0 ? (totalPay / (totalHours + overtimeHours)) : 0).toFixed(2)}</p>
+      <p><strong>Pago de bono total:</strong> $${bonusTotal.toFixed(2)}</p>
+      <p><strong>Pago regular:</strong> $${regularPay.toFixed(2)}</p>
+      <p><strong>Pago de horas extra:</strong> $${overtimePay.toFixed(2)}</p>
+      <p><strong>Pago total por hora:</strong> $${hourlyTotal.toFixed(2)}</p>
+      <p><strong>Pago total:</strong> $${totalPay.toFixed(2)}</p>
+      <p><strong>Promedio diario:</strong> $${(totalPay / dayDiff).toFixed(2)}</p>
+      <p><strong>Promedio semanal:</strong> $${(totalPay / dayDiff * 7).toFixed(2)}</p>
+      <p><strong>Promedio quincenal:</strong> $${(totalPay / dayDiff * 14).toFixed(2)}</p>
+      <p><strong>Promedio por hora (con bono):</strong> $${(totalHours + overtimeHours > 0 ? (totalPay / (totalHours + overtimeHours)) : 0).toFixed(2)}</p>
     `;
     document.getElementById("averageResults").innerHTML = results;
   }
@@ -415,16 +416,27 @@
   });
 </script>
 
+<!-- ✅ IMPORT FROM TRIM TRACKER: only runs when you press the button -->
 <script>
-  document.getElementById('import-tracker-total').addEventListener('click', () => {
+  function importFromTrimTracker(showAlerts = true) {
     const todayISO = new Date().toISOString().split('T')[0];
     const trackerTotal = localStorage.getItem('trimTrackerDailyTotal-' + todayISO);
+
     if (trackerTotal) {
       document.getElementById('grams').value = trackerTotal;
-      alert("Imported " + trackerTotal + "g from Trim Tracker.");
+      if (showAlerts) {
+        alert("Importados " + trackerTotal + " g desde Trim Tracker.");
+      }
     } else {
-      alert("No se encontró un total del Trim Tracker para hoy.");
+      if (showAlerts) {
+        alert("No se encontró un total del Trim Tracker para hoy.");
+      }
     }
+  }
+
+  // 👉 Only run import when user taps the button
+  document.getElementById('import-tracker-total').addEventListener('click', () => {
+    importFromTrimTracker(true);
   });
 </script>
 
