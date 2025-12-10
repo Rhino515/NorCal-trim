@@ -127,6 +127,9 @@
 <button id="import-tracker-total">Agregar el Total de Hoy del Trim Tracker</button>
 <br/>
 <button onclick="calculate()">Calcular</button>
+<!-- 🔥 New button: only this will save into the table -->
+<br/>
+<button onclick="saveToHistory()">Guardar en el historial</button>
 <p id="result"></p>
 
 <div class="install-links">
@@ -228,6 +231,9 @@
 </div>
 
 <script>
+  // store last calculated result so we can save it later if user wants
+  let lastCalculated = null;
+
   function calculateBonus(grams) {
     let bonusPay = 0;
     if (grams > 1587) {
@@ -245,11 +251,46 @@
       document.getElementById('result').innerText = 'Por favor ingresa una cantidad válida de gramos.';
       return;
     }
+
     const bonusPay = calculateBonus(grams);
     document.getElementById('result').innerText = 'Bonus Pay: $' + bonusPay.toFixed(2);
 
-    // 🔥 Fix: no saving to trimHistory here anymore
+    // remember the last valid calculation, but do NOT save to history
+    lastCalculated = { grams: grams, bonusPay: bonusPay };
+  }
+
+  function saveToHistory() {
+    let grams = parseFloat(document.getElementById('grams').value);
+    let bonusPay;
+
+    if (!isNaN(grams) && grams > 0) {
+      // use current input
+      bonusPay = calculateBonus(grams);
+    } else if (lastCalculated) {
+      // fall back to last calculated result if input is empty
+      grams = lastCalculated.grams;
+      bonusPay = lastCalculated.bonusPay;
+    } else {
+      alert("Primero calcula un bono válido antes de guardar en el historial.");
+      return;
+    }
+
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0];
+    const entry = { date: dateStr, grams: grams, bonusPay: bonusPay.toFixed(2) };
+
+    let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+    history.push(entry);
+    localStorage.setItem('trimHistory', JSON.stringify(history));
+
+    updateSessionTable();
+
+    const scrollTarget = document.getElementById('sessionTable');
+    if (scrollTarget) scrollTarget.scrollIntoView({ behavior: 'smooth' });
+
+    // clear input after saving
     document.getElementById('grams').value = '';
+    lastCalculated = null;
   }
 
   function calculateAverages() {
