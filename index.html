@@ -127,6 +127,9 @@
 <button id="import-tracker-total">Agregar el Total de Hoy del Trim Tracker</button>
 <br/>
 <button onclick="calculate()">Calcular</button>
+<!-- 🔥 New button: only this will save into the table -->
+<br/>
+<button onclick="saveToHistory()">Guardar en el historial</button>
 <p id="result"></p>
 
 <div class="install-links">
@@ -144,9 +147,9 @@
   <thead>
     <tr>
       <th>Fecha y Día</th>
-<th>Gramos</th>
-<th>Pago de Bono</th>
-<th>Acción</th>
+      <th>Gramos</th>
+      <th>Pago de Bono</th>
+      <th>Acción</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -177,34 +180,30 @@
     Borrar Todos los Períodos de Pago Pasados
   </button>
 </div>
-  <script>
+
+<script>
   function clearAllPastPayPeriods() {
     const confirmMsg = "¿Estás seguro de que quieres borrar TODOS los períodos de pago pasados? Esto no se puede deshacer.";
     if (!confirm(confirmMsg)) return;
 
     let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
 
-    // Get the current period range
     const current = getCurrentPayPeriod();
     const currentStart = new Date(current.start);
     const currentEnd = new Date(current.end);
     currentEnd.setHours(23, 59, 59, 999);
 
-    // Keep only entries INSIDE the current period
     history = history.filter(entry => {
       const d = new Date(entry.date);
       d.setHours(0, 0, 0, 0);
       return d >= currentStart && d <= currentEnd;
     });
 
-    // Save the cleaned history
     localStorage.setItem('trimHistory', JSON.stringify(history));
-
-    // Refresh table
     updateSessionTable();
   }
 </script>
-</div>
+
 <div style="margin-top: 1.2em; border-top: 1px solid #444; padding-top: 1em;">
   <h2 onclick="togglePayCalc()" style="color:#0f0; cursor:pointer;">Promedios de Pago por Hora ▼</h2>
   <div id="payCalcSection" style="display:none;">
@@ -214,7 +213,8 @@
     <label>Horas trabajadas en total: <input id="totalHours" step="0.1" type="number"/></label><br/>
     <label>Fecha de inicio: <input id="startDate" type="date"/></label><br/>
     <label>Fecha de fin: <input id="endDate" type="date"/></label><br/>
-    <button onclick="calculateAverages()">Calculate Averages</button>
+    <!-- 🔁 Translated button text -->
+    <button onclick="calculateAverages()">Calcular promedios</button>
     <div id="averageResults" style="margin-top: 0.6em; text-align: left;"></div>
   </div>
 </div>
@@ -223,15 +223,18 @@
   <h2 style="color: #0f0;">Acerca del Creador</h2>
   <p style="max-width: 600px; margin: 0 auto; font-size: 1em; line-height: 1.6;">
     Hola, mi nombre es Andrew y trabajo como recortador profesional en NorCal Cannabis.
-Creé la Calculadora de Trim de NorCal para ayudar a simplificar los cálculos del bono y facilitarles a los recortadores
-el seguimiento de su progreso diario.
-<br/><br/>
-Esta herramienta fue diseñada para ser práctica, fácil de usar y eficiente — ayudando a los trabajadores a mantenerse organizados e informados.
-Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas simples que realmente hagan la diferencia en el trabajo.
+    Creé la Calculadora de Trim de NorCal para ayudar a simplificar los cálculos del bono y facilitarles a los recortadores
+    el seguimiento de su progreso diario.
+    <br/><br/>
+    Esta herramienta fue diseñada para ser práctica, fácil de usar y eficiente — ayudando a los trabajadores a mantenerse organizados e informados.
+    Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas simples que realmente hagan la diferencia en el trabajo.
   </p>
 </div>
 
 <script>
+  // store last calculated result so we can save it later if user wants
+  let lastCalculated = null;
+
   function calculateBonus(grams) {
     let bonusPay = 0;
     if (grams > 1587) {
@@ -249,20 +252,49 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
       document.getElementById('result').innerText = 'Por favor ingresa una cantidad válida de gramos.';
       return;
     }
+
     const bonusPay = calculateBonus(grams);
     document.getElementById('result').innerText = 'Bonus Pay: $' + bonusPay.toFixed(2);
+
+    // remember the last valid calculation, but do NOT save to history
+    lastCalculated = { grams: grams, bonusPay: bonusPay };
+  }
+
+  function saveToHistory() {
+    let grams = parseFloat(document.getElementById('grams').value);
+    let bonusPay;
+
+    if (!isNaN(grams) && grams > 0) {
+      // use current input
+      bonusPay = calculateBonus(grams);
+    } else if (lastCalculated) {
+      // fall back to last calculated result if input is empty
+      grams = lastCalculated.grams;
+      bonusPay = lastCalculated.bonusPay;
+    } else {
+      alert("Primero calcula un bono válido antes de guardar en el historial.");
+      return;
+    }
+
     const now = new Date();
     const dateStr = now.toISOString().split('T')[0];
     const entry = { date: dateStr, grams: grams, bonusPay: bonusPay.toFixed(2) };
+
     let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
     history.push(entry);
     localStorage.setItem('trimHistory', JSON.stringify(history));
+
     updateSessionTable();
+
     const scrollTarget = document.getElementById('sessionTable');
     if (scrollTarget) scrollTarget.scrollIntoView({ behavior: 'smooth' });
+
+    // clear input after saving
     document.getElementById('grams').value = '';
+    lastCalculated = null;
   }
 
+  // 🔁 Translated calculateAverages() to Mexican Spanish
   function calculateAverages() {
     const hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
     const totalHours = parseFloat(document.getElementById("totalHours").value);
@@ -271,7 +303,7 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
     const endDate = new Date(document.getElementById("endDate").value);
 
     if (isNaN(hourlyRate) || isNaN(totalHours) || isNaN(startDate) || isNaN(endDate)) {
-      alert("Please fill out all fields.");
+      alert("Por favor llena todos los campos.");
       return;
     }
 
@@ -293,15 +325,15 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
     let dayDiff = Math.max(1, (endDate - startDate) / (1000 * 60 * 60 * 24) + 1);
 
     let results = `
-      <p><strong>Total Bonus Pay:</strong> $${bonusTotal.toFixed(2)}</p>
-      <p><strong>Regular Pay:</strong> $${regularPay.toFixed(2)}</p>
-      <p><strong>Overtime Pay:</strong> $${overtimePay.toFixed(2)}</p>
-      <p><strong>Total Hourly Pay:</strong> $${hourlyTotal.toFixed(2)}</p>
-      <p><strong>Total Pay:</strong> $${totalPay.toFixed(2)}</p>
-      <p><strong>Average Daily Pay:</strong> $${(totalPay / dayDiff).toFixed(2)}</p>
-      <p><strong>Average Weekly:</strong> $${(totalPay / dayDiff * 7).toFixed(2)}</p>
-      <p><strong>Average Bi-Weekly:</strong> $${(totalPay / dayDiff * 14).toFixed(2)}</p>
-      <p><strong>Average Hourly Rate (with bonus):</strong> $${(totalHours + overtimeHours > 0 ? (totalPay / (totalHours + overtimeHours)) : 0).toFixed(2)}</p>
+      <p><strong>Pago de bono total:</strong> $${bonusTotal.toFixed(2)}</p>
+      <p><strong>Pago regular:</strong> $${regularPay.toFixed(2)}</p>
+      <p><strong>Pago de horas extra:</strong> $${overtimePay.toFixed(2)}</p>
+      <p><strong>Pago total por hora:</strong> $${hourlyTotal.toFixed(2)}</p>
+      <p><strong>Pago total:</strong> $${totalPay.toFixed(2)}</p>
+      <p><strong>Promedio diario:</strong> $${(totalPay / dayDiff).toFixed(2)}</p>
+      <p><strong>Promedio semanal:</strong> $${(totalPay / dayDiff * 7).toFixed(2)}</p>
+      <p><strong>Promedio quincenal:</strong> $${(totalPay / dayDiff * 14).toFixed(2)}</p>
+      <p><strong>Promedio por hora (con bono):</strong> $${(totalHours + overtimeHours > 0 ? (totalPay / (totalHours + overtimeHours)) : 0).toFixed(2)}</p>
     `;
     document.getElementById("averageResults").innerHTML = results;
   }
@@ -314,14 +346,14 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
   }
 
   function deleteEntry(index) {
-  const confirmMsg = "¿Estás seguro de que deseas eliminar esta entrada?";
-  if (!confirm(confirmMsg)) return;
+    const confirmMsg = "¿Estás seguro de que deseas eliminar esta entrada?";
+    if (!confirm(confirmMsg)) return;
 
-  let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
-  history.splice(index, 1);
-  localStorage.setItem('trimHistory', JSON.stringify(history));
-  updateSessionTable();
-}
+    let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+    history.splice(index, 1);
+    localStorage.setItem('trimHistory', JSON.stringify(history));
+    updateSessionTable();
+  }
 </script>
 
 <script>
@@ -400,7 +432,7 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
 
 <script>
   function clearCurrentPayPeriod() {
-  const confirmMsg = "¿Estás seguro de que deseas borrar todas las entradas del período de pago actual?";
+    const confirmMsg = "¿Estás seguro de que deseas borrar todas las entradas del período de pago actual?";
     if (!confirm(confirmMsg)) return;
 
     const period = getCurrentPayPeriod();
@@ -421,30 +453,18 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
 
 <script>
   function downloadCSV() {
-  const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
-  if (history.length === 0) {
+    const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+    if (history.length === 0) {
       alert("No hay datos para exportar.");
       return;
-  }
-
-  const headers = ["Date", "Grams", "Bonus"];
-  const rows = history.map(entry => [entry.date, entry.grams, parseFloat(entry.bonusPay || 0).toFixed(2)]);
-
-  let csvContent = "data:text/csv;charset=utf-8,"
-    + headers.join(",") + "\n"
-    + rows.map(e => e.join(",")).join("\n");
-
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "norcal_trim_data.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
+    }
 
     const headers = ["Date", "Grams", "Bonus"];
-    const rows = history.map(entry => [entry.date, entry.grams, parseFloat(entry.bonusPay || 0).toFixed(2)]);
+    const rows = history.map(entry => [
+      entry.date,
+      entry.grams,
+      parseFloat(entry.bonusPay || 0).toFixed(2)
+    ]);
 
     let csvContent = "data:text/csv;charset=utf-8,"
       + headers.join(",") + "\n"
@@ -486,7 +506,7 @@ Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas si
         const grams = parseFloat(columns[1].trim());
         const bonus = parseFloat(columns[2].trim());
 
-        if (/^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(grams) && grams >= 0 && !isNaN(bonus) && bonus >= 0) {
+        if (/^\d{4}-\d{2}-\d2$/.test(date) && !isNaN(grams) && grams >= 0 && !isNaN(bonus) && bonus >= 0) {
           imported.push({ date: date, grams: grams, bonusPay: bonus.toFixed(2) });
         } else {
           errorCount++;
