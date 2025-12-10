@@ -134,7 +134,6 @@
 <button id="import-tracker-total">Agregar el Total de Hoy del Trim Tracker</button>
 <br/>
 <button onclick="calculate()">Calcular</button>
-<!-- 🔥 New button: only this will save into the table -->
 <br/>
 <button onclick="saveToHistory()">Guardar en el historial</button>
 <p id="result"></p>
@@ -214,10 +213,23 @@
 <div style="margin-top: 1.2em; border-top: 1px solid #444; padding-top: 1em;">
   <h2 onclick="togglePayCalc()" style="color:#0f0; cursor:pointer;">Promedios de Pago por Hora ▼</h2>
   <div id="payCalcSection" style="display:none;">
-    <p>Ingresa tu pago por hora y las horas trabajadas, luego elige un rango de fechas:</p>
+    <p>Ingresa tu pago por hora y tus horas regulares/extra, luego elige un rango de fechas:</p>
     <label>Pago por hora: <input id="hourlyRate" step="0.01" type="number"/></label><br/>
-    <label>Horas extra: <input id="overtimeHours" step="0.1" type="number"/></label><br/>
-    <label>Horas trabajadas en total: <input id="totalHours" step="0.1" type="number"/></label><br/>
+
+    <!-- 🔹 Horas regulares: horas + minutos -->
+    <label>
+      Horas regulares:
+      <input id="regularHours" type="number" min="0" step="1" placeholder="Horas"/>
+      <input id="regularMinutes" type="number" min="0" max="59" step="1" placeholder="Minutos"/>
+    </label><br/>
+
+    <!-- 🔹 Horas extra: horas + minutos -->
+    <label>
+      Horas extra:
+      <input id="overtimeHours" type="number" min="0" step="1" placeholder="Horas"/>
+      <input id="overtimeMinutes" type="number" min="0" max="59" step="1" placeholder="Minutos"/>
+    </label><br/>
+
     <label>Fecha de inicio: <input id="startDate" type="date"/></label><br/>
     <label>Fecha de fin: <input id="endDate" type="date"/></label><br/>
     <button onclick="calculateAverages()">Calcular promedios</button>
@@ -300,15 +312,24 @@
     lastCalculated = null;
   }
 
+  // 🔹 Actualizado: usa horas regulares + extra (horas + minutos)
   function calculateAverages() {
     const hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
-    const totalHours = parseFloat(document.getElementById("totalHours").value);
+
+    const regularHours = parseFloat(document.getElementById("regularHours").value) || 0;
+    const regularMinutes = parseFloat(document.getElementById("regularMinutes").value) || 0;
     const overtimeHours = parseFloat(document.getElementById("overtimeHours").value) || 0;
+    const overtimeMinutes = parseFloat(document.getElementById("overtimeMinutes").value) || 0;
+
     const startDate = new Date(document.getElementById("startDate").value);
     const endDate = new Date(document.getElementById("endDate").value);
 
-    if (isNaN(hourlyRate) || isNaN(totalHours) || isNaN(startDate) || isNaN(endDate)) {
-      alert("Por favor llena todos los campos.");
+    const totalRegularHours = regularHours + (regularMinutes / 60);
+    const totalOvertimeHours = overtimeHours + (overtimeMinutes / 60);
+    const totalHoursWorked = totalRegularHours + totalOvertimeHours;
+
+    if (isNaN(hourlyRate) || isNaN(startDate) || isNaN(endDate) || totalHoursWorked <= 0) {
+      alert("Por favor llena todos los campos, incluyendo horas regulares y horas extra.");
       return;
     }
 
@@ -322,8 +343,9 @@
     });
 
     let bonusTotal = filtered.reduce((sum, entry) => sum + parseFloat(entry.bonusPay || 0), 0);
-    let regularPay = hourlyRate * totalHours;
-    let overtimePay = hourlyRate * 1.5 * overtimeHours;
+
+    let regularPay = hourlyRate * totalRegularHours;
+    let overtimePay = hourlyRate * 1.5 * totalOvertimeHours;
     let hourlyTotal = regularPay + overtimePay;
     let totalPay = bonusTotal + hourlyTotal;
 
@@ -333,12 +355,12 @@
       <p><strong>Pago de bono total:</strong> $${bonusTotal.toFixed(2)}</p>
       <p><strong>Pago regular:</strong> $${regularPay.toFixed(2)}</p>
       <p><strong>Pago de horas extra:</strong> $${overtimePay.toFixed(2)}</p>
-      <p><strong>Pago total por hora:</strong> $${hourlyTotal.toFixed(2)}</p>
-      <p><strong>Pago total:</strong> $${totalPay.toFixed(2)}</p>
+      <p><strong>Pago total por hora (solo sueldo):</strong> $${hourlyTotal.toFixed(2)}</p>
+      <p><strong>Pago total (sueldo + bono):</strong> $${totalPay.toFixed(2)}</p>
       <p><strong>Promedio diario:</strong> $${(totalPay / dayDiff).toFixed(2)}</p>
       <p><strong>Promedio semanal:</strong> $${(totalPay / dayDiff * 7).toFixed(2)}</p>
       <p><strong>Promedio quincenal:</strong> $${(totalPay / dayDiff * 14).toFixed(2)}</p>
-      <p><strong>Promedio por hora (con bono):</strong> $${(totalHours + overtimeHours > 0 ? (totalPay / (totalHours + overtimeHours)) : 0).toFixed(2)}</p>
+      <p><strong>Promedio por hora (con bono):</strong> $${(totalHoursWorked > 0 ? (totalPay / totalHoursWorked) : 0).toFixed(2)}</p>
     `;
     document.getElementById("averageResults").innerHTML = results;
   }
@@ -531,7 +553,7 @@
         const grams = parseFloat(columns[1].trim());
         const bonus = parseFloat(columns[2].trim());
 
-        if (/^\d{4}-\d{2}-\d2$/.test(date) && !isNaN(grams) && grams >= 0 && !isNaN(bonus) && bonus >= 0) {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(grams) && grams >= 0 && !isNaN(bonus) && bonus >= 0) {
           imported.push({ date: date, grams: grams, bonusPay: bonus.toFixed(2) });
         } else {
           errorCount++;
