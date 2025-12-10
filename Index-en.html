@@ -121,6 +121,13 @@
 <body>
 
 <img alt="NorCal Logo" src="norcal_icon.png"/>
+
+<!-- 🔹 New Trim Tracker daily total display (Mexican Spanish) -->
+<div id="trackerSummary" style="margin-top:0.4em;font-size:0.95em;color:#0f0;">
+  <strong>Total de hoy en Trim Tracker:</strong>
+  <span id="trackerTotalDisplay">0g</span>
+</div>
+
 <p>Ingresa el total de gramos cortados:</p>
 <input id="grams" placeholder="e.g. 1200" type="number"/>
 <br/>
@@ -293,7 +300,6 @@
     lastCalculated = null;
   }
 
-  // 🔁 Translated calculateAverages() to Mexican Spanish
   function calculateAverages() {
     const hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
     const totalHours = parseFloat(document.getElementById("totalHours").value);
@@ -355,6 +361,22 @@
   }
 </script>
 
+<!-- 🔹 New helper: update Trim Tracker total display -->
+<script>
+  function updateTrackerTotalDisplay() {
+    const todayISO = new Date().toISOString().split('T')[0];
+    const trackerTotal = localStorage.getItem('trimTrackerDailyTotal-' + todayISO);
+    const displayEl = document.getElementById('trackerTotalDisplay');
+    if (!displayEl) return;
+
+    if (trackerTotal) {
+      displayEl.textContent = trackerTotal + 'g';
+    } else {
+      displayEl.textContent = '0g';
+    }
+  }
+</script>
+
 <script>
   // Auto pay period starting from April 14, 2025 (Monday)
   function getCurrentPayPeriod() {
@@ -413,30 +435,23 @@
       localStorage.setItem('trimHistory', JSON.stringify(history));
     }
     updateSessionTable();
+    // 🔹 Refresh tracker total display on load
+    updateTrackerTotalDisplay();
   });
 </script>
 
-<!-- ✅ IMPORT FROM TRIM TRACKER: only runs when you press the button -->
 <script>
-  function importFromTrimTracker(showAlerts = true) {
+  document.getElementById('import-tracker-total').addEventListener('click', () => {
     const todayISO = new Date().toISOString().split('T')[0];
     const trackerTotal = localStorage.getItem('trimTrackerDailyTotal-' + todayISO);
-
     if (trackerTotal) {
       document.getElementById('grams').value = trackerTotal;
-      if (showAlerts) {
-        alert("Importados " + trackerTotal + " g desde Trim Tracker.");
-      }
+      alert("Imported " + trackerTotal + "g from Trim Tracker.");
     } else {
-      if (showAlerts) {
-        alert("No se encontró un total del Trim Tracker para hoy.");
-      }
+      alert("No se encontró un total del Trim Tracker para hoy.");
     }
-  }
-
-  // 👉 Only run import when user taps the button
-  document.getElementById('import-tracker-total').addEventListener('click', () => {
-    importFromTrimTracker(true);
+    // 🔹 Also update the display whenever this button is used
+    updateTrackerTotalDisplay();
   });
 </script>
 
@@ -516,7 +531,7 @@
         const grams = parseFloat(columns[1].trim());
         const bonus = parseFloat(columns[2].trim());
 
-        if (/^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(grams) && grams >= 0 && !isNaN(bonus) && bonus >= 0) {
+        if (/^\d{4}-\d{2}-\d2$/.test(date) && !isNaN(grams) && grams >= 0 && !isNaN(bonus) && bonus >= 0) {
           imported.push({ date: date, grams: grams, bonusPay: bonus.toFixed(2) });
         } else {
           errorCount++;
