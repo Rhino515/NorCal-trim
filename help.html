@@ -49,7 +49,7 @@
       border-radius: 4px;
     }
     .faq-answer.open {
-      max-height: 500px;
+      max-height: 900px;
       padding: 0.5em 1em;
     }
   </style>
@@ -58,24 +58,70 @@
   <h1>Ayuda & Cómo Usar</h1>
 
   <h2>Descripción General</h2>
-  <p>Las Herramientas de Trim de NorCal fueron creadas para ayudar a los recortadores de cannabis a mantenerse organizados, motivados y precisos con su trabajo. Con la Calculadora de Trim y el Rastreador de Trim, puedes registrar fácilmente tu peso diario, calcular tu pago de bono y seguir tu progreso a lo largo de los periodos de pago — todo directamente en tu navegador sin cuenta ni inicio de sesión.</p>
-  <p>Toda tu información se guarda localmente en tu dispositivo, y puedes exportarla en cualquier momento para respaldo o reportes. Ya sea que estés registrando un solo día o todo tu ciclo de pago, estas herramientas están diseñadas para hacer tu trabajo más rápido, fácil y transparente.</p>
+  <p>
+    Las Herramientas de Trim de NorCal fueron creadas para ayudar a los recortadores de cannabis a mantenerse organizados,
+    motivados y precisos con su trabajo. Con la Calculadora de Trim y el Rastreador de Trim, puedes registrar fácilmente
+    tu peso diario, calcular tu pago de bono y seguir tu progreso a lo largo de los periodos de pago — todo directamente
+    en tu navegador sin cuenta ni inicio de sesión.
+  </p>
+  <p>
+    Toda tu información se guarda localmente en tu dispositivo (en tu navegador), y puedes exportarla en cualquier momento
+    para respaldo o reportes. Ya sea que estés registrando un solo día o todo tu ciclo de pago, estas herramientas están
+    diseñadas para hacer tu trabajo más rápido, fácil y transparente.
+  </p>
 
   <h2>Cómo Usar la Calculadora de Trim</h2>
   <ul>
+    <li>Arriba verás un texto verde que muestra el <strong>total de hoy del Trim Tracker</strong> (si ya registraste algo hoy).</li>
     <li>Ingresa el total de gramos que cortaste en el día.</li>
     <li>Haz clic en <strong>"Agregar el Total de Hoy del Trim Tracker"</strong> para importar tus gramos guardados (si ya los registraste hoy).</li>
-    <li>Haz clic en <strong>"Calcular"</strong> para agregar la entrada al tablero con el bono calculado.</li>
-    <li>El tablero agrupa tus entradas por periodos de pago quincenales, comenzando cada dos lunes.</li>
-    <li>Los periodos pasados están <strong>colapsados por defecto</strong> para mantener todo ordenado. Haz clic en <strong>[+]</strong> para expandirlos.</li>
-    <li>Usa <strong>"Exportar CSV"</strong> para guardar tu historial completo, o <strong>"Borrar el período de pago actual"</strong> para reiniciar solo el periodo activo.</li>
+    <li>Haz clic en <strong>"Calcular"</strong> para ver el bono estimado.</li>
+    <li>Haz clic en <strong>"Guardar en el historial"</strong> para guardar tu día en el tablero (session board) con el bono calculado.</li>
+    <li>El tablero agrupa tus entradas por periodos de pago quincenales (cada 2 semanas), comenzando cada dos lunes.</li>
+    <li>
+      Los periodos pasados están <strong>colapsados por defecto</strong> para mantener todo ordenado.
+      Haz clic en <strong>[+]</strong> para expandirlos y <strong>[-]</strong> para cerrarlos.
+    </li>
+    <li>
+      En cada barra de periodo pasado (colapsada), ahora aparece el <strong>total de ese periodo</strong> como un monto en <strong>verde</strong>
+      al lado del rango de fechas (por ejemplo: <em>Pay Period: 2025-xx-xx – 2025-xx-xx $123.45</em>).
+    </li>
+    <li>
+      Puedes editar directamente:
+      <ul>
+        <li><strong>Fecha:</strong> haz clic y edita. Si cambias la fecha, la entrada se moverá automáticamente al periodo correcto.</li>
+        <li><strong>Gramos:</strong> haz clic y edita. El bono se recalcula automáticamente.</li>
+      </ul>
+    </li>
+    <li>Usa <strong>"Importar CSV"</strong> para cargar datos guardados anteriormente.</li>
+    <li>Usa <strong>"Exportar CSV"</strong> para guardar tu historial completo como respaldo.</li>
+    <li>Usa <strong>"Borrar el período de pago actual"</strong> para borrar solo el periodo activo.</li>
+    <li>Usa <strong>"Borrar Todos los Períodos de Pago Pasados"</strong> para borrar todos los periodos anteriores (esto no se puede deshacer).</li>
   </ul>
 
   <h2>Calculadora de Pago por Hora</h2>
   <ul>
     <li>Expande la sección <strong>"Promedios de Pago por Hora ▼"</strong> debajo del tablero.</li>
-    <li>Ingresa tu pago por hora, horas trabajadas, horas extras y selecciona un rango de fechas.</li>
-    <li>Haz clic en <strong>"Calcular Promedios"</strong> para ver tu desglose completo: bono, horas extras, total, promedios diarios/semanales/quincenales.</li>
+    <li>Ingresa tu <strong>pago por hora</strong>.</li>
+    <li>
+      Ingresa tus <strong>horas regulares</strong> y <strong>horas extra</strong> usando:
+      <ul>
+        <li>Un campo para <strong>Horas</strong></li>
+        <li>Un campo para <strong>Minutos</strong></li>
+      </ul>
+    </li>
+    <li>Selecciona una <strong>fecha de inicio</strong> y <strong>fecha de fin</strong>.</li>
+    <li>
+      Haz clic en <strong>"Calcular promedios"</strong> para ver:
+      <ul>
+        <li>Pago de bono total</li>
+        <li>Pago regular</li>
+        <li>Pago de horas extra</li>
+        <li>Total (sueldo + bono)</li>
+        <li>Promedios diario / semanal / quincenal</li>
+        <li>Promedio por hora (con bono)</li>
+      </ul>
+    </li>
   </ul>
 
   <h2>Cómo Usar el Trim Tracker</h2>
@@ -86,12 +132,15 @@
     <li>Regresa a la calculadora y haz clic en el botón verde para importar ese total.</li>
   </ul>
 
-  <h2>Consejos & Preguntas Frecuentes</h2>
+  <h2>Consejos Importantes</h2>
   <ul>
     <li><strong>Todo se guarda automáticamente:</strong> Tu información permanece en tu navegador a menos que la borres manualmente.</li>
-    <li><strong>Los periodos pasados ahora son colapsables:</strong> Esto mantiene la vista ordenada — expande cualquier periodo anterior para ver o editar entradas.</li>
-    <li><strong>Edición de fechas soportada:</strong> Puedes hacer clic y editar cualquier fecha o cantidad directamente en la tabla. Se moverá automáticamente al periodo de pago correcto.</li>
-    <li><strong>Haz respaldo seguido:</strong> Usa "Exportar CSV" para guardar tus datos antes de borrar el historial.</li>
+    <li><strong>Tu data es privada:</strong> Se guarda en <strong>localStorage</strong> en este dispositivo.</li>
+    <li>
+      <strong>No mezcles idiomas:</strong> Para evitar problemas de sincronización, usa la calculadora y el tracker en el mismo idioma.
+      Si instalas dos versiones (Inglés/Español), lo mejor es usar solo una para guardar/leer datos.
+    </li>
+    <li><strong>Haz respaldo seguido:</strong> Usa "Exportar CSV" antes de borrar periodos o cambiar de teléfono.</li>
   </ul>
 
   <h2>¿Necesitas Más Ayuda?</h2>
@@ -99,48 +148,76 @@
 
   <p><a href="index.html">← Regresar a la Calculadora</a></p>
 
-  <hr>
+  <hr />
   <h2>Preguntas Frecuentes</h2>
 
   <div class="faq-item">
     <button class="faq-question">¿Por qué no puedo importar mi total del Trim Tracker?</button>
     <div class="faq-answer">
-      <p>Asegúrate de haber guardado una entrada en el Trim Tracker para la fecha de hoy. La calculadora solo importa el total de hoy.</p>
+      <p>
+        Asegúrate de haber guardado una entrada en el Trim Tracker para la fecha de hoy.
+        La calculadora solo importa el total de hoy. Si estás usando otra versión (otro idioma),
+        intenta usar solo un idioma para guardar y cargar.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">¿Qué significa el monto verde en la barra del periodo de pago pasado?</button>
+    <div class="faq-answer">
+      <p>
+        Ese número verde es el <strong>total del bono</strong> de ese periodo de pago (la suma de todas las entradas dentro de ese periodo).
+        Solo es un resumen rápido para que no tengas que abrir el periodo para ver cuánto hiciste.
+      </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">¿Puedo editar entradas anteriores?</button>
     <div class="faq-answer">
-      <p>Sí. Haz clic en cualquier fecha o cantidad directamente en la tabla para editarla. Se moverá automáticamente al periodo de pago correcto.</p>
+      <p>
+        Sí. Haz clic en cualquier fecha o cantidad de gramos directamente en la tabla para editarla.
+        Si cambias la fecha, la entrada se moverá al periodo correcto. Si cambias gramos, el bono se recalcula.
+      </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">¿Cómo se agrupan los periodos de pago?</button>
     <div class="faq-answer">
-      <p>Los periodos de pago son quincenales, comenzando cada dos lunes. Los periodos pasados están colapsados por defecto para mantener la página ordenada.</p>
+      <p>
+        Los periodos de pago son quincenales, comenzando desde un lunes base (cada 14 días).
+        Los periodos pasados aparecen colapsados por defecto para mantener la página ordenada.
+      </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">¿Qué es la Calculadora de Pago por Hora?</button>
     <div class="faq-answer">
-      <p>Esta herramienta te permite ingresar tu pago por hora, horas trabajadas y rango de fechas. Calcula tu pago regular, horas extras y lo combina con tu pago de bono para darte un desglose completo.</p>
+      <p>
+        Esta herramienta te permite ingresar tu pago por hora, horas regulares y horas extra (con horas y minutos),
+        y un rango de fechas. Calcula tu pago regular, horas extra y lo combina con tu bono para darte un desglose completo.
+      </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">¿Dónde se guarda mi información?</button>
     <div class="faq-answer">
-      <p>Todos tus datos se guardan en tu navegador (localStorage). Es privado y solo accesible desde este dispositivo.</p>
+      <p>
+        Todos tus datos se guardan en tu navegador (localStorage). Es privado y solo accesible desde este dispositivo.
+      </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">¿Qué pasa si borro mi navegador o cambio de teléfono?</button>
     <div class="faq-answer">
-      <p>Perderás tus datos a menos que los hayas exportado antes. Siempre usa "Exportar CSV" para guardar una copia antes de cambiar de dispositivo o borrar datos.</p>
+      <p>
+        Perderás tus datos a menos que los hayas exportado antes. Siempre usa "Exportar CSV" para guardar una copia
+        antes de cambiar de dispositivo o borrar datos.
+      </p>
     </div>
   </div>
 
