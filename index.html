@@ -129,6 +129,37 @@
   .past-period-content.open {
     display: block;
   }
+
+  /* ✅ ADDED: Lightning bolt link next to "Acerca del Creador" */
+  .creatorTitle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .secretBolt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: #111;
+    border: 1px solid #0f0;
+    color: #0f0;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+  }
+  .secretBolt:hover {
+    background: #0f0;
+    color: #000;
+  }
+  .secretBolt:active {
+    transform: scale(0.95);
+  }
 </style>
 </head>
 <body>
@@ -245,7 +276,12 @@
 </div>
 
 <div style="margin-top: 4em; padding-top: 2em; border-top: 1px solid #444;">
-  <h2 style="color: #0f0;">Acerca del Creador</h2>
+  <!-- ✅ UPDATED: Added ⚡ link to shift-tools.html -->
+  <h2 class="creatorTitle" style="color: #0f0;">
+    Acerca del Creador
+    <a class="secretBolt" href="shift-tools.html" title="Herramientas de Turno">⚡</a>
+  </h2>
+
   <p style="max-width: 600px; margin: 0 auto; font-size: 1em; line-height: 1.6;">
     Hola, mi nombre es Andrew y trabajo como recortador profesional en NorCal Cannabis.
     Creé la Calculadora de Trim de NorCal para ayudar a simplificar los cálculos del bono y facilitarles a los recortadores
@@ -650,7 +686,6 @@
     Object.keys(grouped).filter(key => key !== currentPeriod.start).forEach(key => {
       const group = grouped[key];
 
-      // NEW: sum this pay period's total bonus and show it in green on the header
       const periodTotal = group.entries.reduce((sum, pair) => {
         const entry = pair[0];
         return sum + parseFloat(entry.bonusPay || 0);
