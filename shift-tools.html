@@ -237,7 +237,7 @@
     </div>
 
     <div class="hero" id="hero">
-      <div id="clock" class="clock" title="Toca para expandir">--:--</div>
+      <div id="clock" class="clock" title="Toca para ampliar">--:--</div>
       <div id="ampm" class="ampm">—</div>
       <div id="date" class="date">---</div>
 
@@ -263,7 +263,7 @@
         <div class="goalBar">
           <div id="goalFill"></div>
         </div>
-        <div class="goalHint" id="goalHint">Define metas en Ajustes para ver tu ritmo.</div>
+        <div class="goalHint" id="goalHint">Configura metas en Ajustes para seguir tu ritmo.</div>
       </div>
 
       <div class="stats">
@@ -275,12 +275,12 @@
         <div class="statBox">
           <div class="statLabel">Bucked</div>
           <div class="statValue"><span id="countBucked">0</span></div>
-          <div class="statSub">Prom: <span id="avgMinBucked">0</span> min/servicio</div>
+          <div class="statSub">Promedio: <span id="avgMinBucked">0</span> min/servicio</div>
         </div>
         <div class="statBox">
           <div class="statLabel">Branch</div>
           <div class="statValue"><span id="countBranch">0</span></div>
-          <div class="statSub">Prom: <span id="avgMinBranch">0</span> min/servicio</div>
+          <div class="statSub">Promedio: <span id="avgMinBranch">0</span> min/servicio</div>
         </div>
       </div>
 
@@ -290,7 +290,7 @@
             <div class="name">BUCKED</div>
             <div class="hint" id="hintBucked">Toca para iniciar</div>
           </div>
-          <div class="right" id="presetBucked">Preset: Estándar</div>
+          <div class="right" id="presetBucked">Preajuste: —</div>
         </button>
 
         <button class="bigBtn" id="btnBranch">
@@ -298,17 +298,28 @@
             <div class="name">BRANCH</div>
             <div class="hint" id="hintBranch">Toca para iniciar</div>
           </div>
-          <div class="right" id="presetBranch">Preset: Estándar</div>
+          <div class="right" id="presetBranch">Preajuste: —</div>
         </button>
       </div>
 
+      <div class="strip" style="margin-top:4px; width:min(900px,100%);">
+        <span class="pill"><b>Preajustes:</b></span>
+        <div style="flex:1; min-width:260px;">
+          <select id="quickPresetBuckedSelect"></select>
+        </div>
+        <div style="flex:1; min-width:260px;">
+          <select id="quickPresetBranchSelect"></select>
+        </div>
+      </div>
+
       <div class="inlineRow" id="activeRow" style="margin-top:6px;">
-        <button class="red hide" id="cancelActive">Cancelar servicio activo</button>
+        <button class="gray hide" id="pauseActive">Pausar</button>
+        <button class="red hide" id="cancelActive">Cancelar activo</button>
       </div>
 
       <div class="muted">
-        Se guarda localmente en tu teléfono (sin iniciar sesión). Si borras “Datos del sitio”, se eliminará.
-        <div style="margin-top:6px"><a href="index.html">← Volver a la calculadora</a></div>
+        Se guarda localmente en tu teléfono (sin inicio de sesión). Si borras “Datos del sitio web”, se borrará.
+        <div style="margin-top:6px"><a href="index.html">← Volver a la Calculadora</a></div>
       </div>
     </div>
   </div>
@@ -316,7 +327,7 @@
   <div class="logWrap" id="logSection">
     <div class="card">
       <div class="logHeader">
-        <h2>Registro de servicios de hoy</h2>
+        <h2>Registro de Servicios de Hoy</h2>
         <div class="tiny">Los gramos se pueden editar después.</div>
       </div>
 
@@ -334,7 +345,7 @@
       </table>
 
       <div class="dangerBox">
-        <button class="red" id="clearToday">Borrar registro de hoy</button>
+        <button class="red" id="clearToday">Borrar el registro de hoy</button>
         <span class="tiny">Solo borra el día de hoy en este dispositivo.</span>
       </div>
     </div>
@@ -347,7 +358,7 @@
     <div class="modalTop">
       <div>
         <h2>Ajustes</h2>
-        <div class="modalHint">Horario, metas y presets se configuran aquí — la pantalla principal se mantiene simple.</div>
+        <div class="modalHint">Horario, metas y preajustes viven aquí — la pantalla principal se queda simple.</div>
       </div>
       <div>
         <button class="gray" id="closeSettings">Cerrar</button>
@@ -356,15 +367,15 @@
 
     <div class="modalGrid">
       <div class="card">
-        <h2 style="margin:0 0 8px; color:#fff; font-size:16px;">Presets de servicio</h2>
+        <h2 style="margin:0 0 8px; color:#fff; font-size:16px;">Preajustes de Servicio</h2>
 
         <div class="row" style="display:flex; gap:10px; flex-wrap:wrap;">
           <div style="flex:1; min-width:240px;">
-            <label>Preset predeterminado (Bucked)</label>
+            <label>Preajuste predeterminado (Bucked)</label>
             <select id="defaultPresetBucked"></select>
           </div>
           <div style="flex:1; min-width:240px;">
-            <label>Preset predeterminado (Branch)</label>
+            <label>Preajuste predeterminado (Branch)</label>
             <select id="defaultPresetBranch"></select>
           </div>
         </div>
@@ -378,7 +389,7 @@
             </select>
           </div>
           <div style="flex:2; min-width:240px;">
-            <label>Lista de presets</label>
+            <label>Lista de preajustes</label>
             <select id="presetSelectManage"></select>
           </div>
         </div>
@@ -395,11 +406,13 @@
         </div>
 
         <div>
-          <button class="gray" id="saveServingPreset">Guardar como preset</button>
-          <button class="red" id="deleteServingPreset">Eliminar preset</button>
+          <button class="green" id="saveServingPreset">Guardar cambios</button>
+          <button class="gray" id="addServingPreset">➕ Agregar nuevo</button>
+          <button class="gray" id="renameServingPreset">Renombrar</button>
+          <button class="red" id="deleteServingPreset">Eliminar preajuste</button>
         </div>
 
-        <div class="muted">Los predeterminados controlan lo que usan los botones grandes en la pantalla principal.</div>
+        <div class="muted">Tip: elige un preajuste, cambia gramos/minutos y presiona <b>Guardar cambios</b>.</div>
       </div>
 
       <div class="card">
@@ -407,11 +420,11 @@
 
         <div class="row" style="display:flex; gap:10px; flex-wrap:wrap;">
           <div style="flex:1; min-width:210px;">
-            <label>Inicio de recorte 1</label>
+            <label>Recorte 1 (inicio)</label>
             <input id="w1s" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
-            <label>Fin de recorte 1 (inicia descanso 1)</label>
+            <label>Recorte 1 (fin) (empieza descanso 1)</label>
             <input id="w1e" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
@@ -422,11 +435,11 @@
 
         <div class="row" style="display:flex; gap:10px; flex-wrap:wrap;">
           <div style="flex:1; min-width:210px;">
-            <label>Inicio de recorte 2</label>
+            <label>Recorte 2 (inicio)</label>
             <input id="w2s" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
-            <label>Fin de recorte 2 (inicia comida)</label>
+            <label>Recorte 2 (fin) (empieza comida)</label>
             <input id="w2e" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
@@ -437,11 +450,11 @@
 
         <div class="row" style="display:flex; gap:10px; flex-wrap:wrap;">
           <div style="flex:1; min-width:210px;">
-            <label>Inicio de recorte 3</label>
+            <label>Recorte 3 (inicio)</label>
             <input id="w3s" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
-            <label>Fin de recorte 3 (inicia descanso 2)</label>
+            <label>Recorte 3 (fin) (empieza descanso 2)</label>
             <input id="w3e" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
@@ -452,7 +465,7 @@
 
         <div class="row" style="display:flex; gap:10px; flex-wrap:wrap;">
           <div style="flex:1; min-width:210px;">
-            <label>Inicio de recorte final</label>
+            <label>Último recorte (inicio)</label>
             <input id="w4s" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
@@ -460,36 +473,36 @@
             <input id="w4e" type="time" />
           </div>
           <div style="flex:1; min-width:210px;">
-            <label>Fin de turno (checar salida)</label>
+            <label>Fin de turno (salida)</label>
             <input id="shiftEnd" type="time" />
           </div>
         </div>
 
         <button class="green" id="saveSchedule" style="width:100%">Guardar horario</button>
-        <div class="muted">Si te dicen que empieces más tarde, edita las horas de inicio y guarda.</div>
+        <div class="muted">Si te dicen que empieces más tarde, ajusta las horas de inicio y guarda.</div>
       </div>
 
       <div class="card">
-        <h2 style="margin:0 0 8px; color:#fff; font-size:16px;">Metas por punto de control</h2>
+        <h2 style="margin:0 0 8px; color:#fff; font-size:16px;">Metas por Punto de Control</h2>
 
         <div class="row" style="display:flex; gap:10px; flex-wrap:wrap;">
           <div style="flex:1; min-width:210px;">
-            <label>Meta para descanso 1</label>
+            <label>Meta para Descanso 1</label>
             <input id="gB1" type="number" step="1" min="0" placeholder="gramos" />
           </div>
           <div style="flex:1; min-width:210px;">
-            <label>Meta para comida</label>
+            <label>Meta para Comida</label>
             <input id="gL" type="number" step="1" min="0" placeholder="gramos" />
           </div>
         </div>
 
         <div class="row" style="display:flex; gap:10px; flex-wrap:wrap;">
           <div style="flex:1; min-width:210px;">
-            <label>Meta para descanso 2</label>
+            <label>Meta para Descanso 2</label>
             <input id="gB2" type="number" step="1" min="0" placeholder="gramos" />
           </div>
           <div style="flex:1; min-width:210px;">
-            <label>Meta para el final</label>
+            <label>Meta para el Final</label>
             <input id="gE" type="number" step="1" min="0" placeholder="gramos" />
           </div>
         </div>
@@ -506,14 +519,24 @@
 </div>
 
 <script>
-const STORE_KEY = "shiftTools_v3_goalBar";
+const STORE_KEY = "shiftTools_v4_presets_finishConfirm";
 
+/* ====== STATE ====== */
 function loadState() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || null; } catch(e) { return null; } }
 function saveState() { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
+const seededPresets = {
+  bucked: [
+    { id:"bucked_454_400_30", name:"Bucked 454 → 400g", goalMin:30, grams:400 },
+    { id:"bucked_350_300_30", name:"Bucked 350 → 300g", goalMin:30, grams:300 },
+  ],
+  branch: [
+    { id:"branch_350_200_30", name:"Branch 350 → 200g", goalMin:30, grams:200 },
+  ]
+};
+
 const defaultState = {
   shiftEnabled: true,
-
   schedule: {
     w1s: "06:00", w1e: "08:30", b1m: 10,
     w2s: "08:40", w2e: "10:30", lm: 30,
@@ -522,25 +545,43 @@ const defaultState = {
     shiftEnd: "14:30"
   },
   goals: { gB1: 0, gL: 0, gB2: 0, gE: 0 },
-  servingDefaults: { bucked: { goalMin: 30, grams: 400 }, branch: { goalMin: 25, grams: 200 } },
+
   servingPresets: { bucked: [], branch: [] },
-  activePresetId: { bucked: "standard", branch: "standard" },
+  activePresetId: { bucked: "bucked_454_400_30", branch: "branch_350_200_30" },
+
   activeServing: null,
   today: {}
 };
 
 let state = loadState() || defaultState;
 
-(function migrate() {
+/* ====== MIGRATE / SEED DEFAULT PRESETS ====== */
+(function migrateAndSeed() {
   if (typeof state.shiftEnabled !== "boolean") state.shiftEnabled = true;
-  if (!state.servingDefaults) state.servingDefaults = defaultState.servingDefaults;
   if (!state.servingPresets) state.servingPresets = { bucked: [], branch: [] };
-  if (!state.activePresetId) state.activePresetId = { bucked: "standard", branch: "standard" };
-  if (!state.schedule?.shiftEnd) state.schedule.shiftEnd = defaultState.schedule.shiftEnd;
+  if (!state.activePresetId) state.activePresetId = { bucked: seededPresets.bucked[0].id, branch: seededPresets.branch[0].id };
+  if (!state.schedule?.shiftEnd) state.schedule = defaultState.schedule;
   if (!state.today) state.today = {};
+
+  ["bucked","branch"].forEach(type => {
+    const existing = state.servingPresets[type] || [];
+    seededPresets[type].forEach(sp => {
+      if (!existing.some(p => p.id === sp.id)) existing.push({ ...sp });
+    });
+    state.servingPresets[type] = existing;
+  });
+
+  ["bucked","branch"].forEach(type => {
+    const id = state.activePresetId[type];
+    if (!state.servingPresets[type].some(p => p.id === id)) {
+      state.activePresetId[type] = seededPresets[type][0].id;
+    }
+  });
+
   saveState();
 })();
 
+/* ====== HELPERS ====== */
 const el = (id) => document.getElementById(id);
 function pad2(n){ return String(n).padStart(2, "0"); }
 
@@ -581,6 +622,7 @@ function uid() {
 function toggleClockZoom() { document.body.classList.toggle("clockZoom"); }
 el("clock").addEventListener("click", toggleClockZoom);
 
+/* ====== SETTINGS OPEN/CLOSE ====== */
 function openSettings() {
   const o = el("settingsOverlay");
   o.classList.add("open");
@@ -600,10 +642,11 @@ el("toggleLog").addEventListener("click", () => {
   el("logSection").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
+/* ====== SHIFT TOGGLE ====== */
 function applyShiftUI() {
   const on = state.shiftEnabled !== false;
   document.body.classList.toggle("shiftOff", !on);
-  el("toggleShift").textContent = on ? "🕒 Turno: ACTIVADO" : "🕒 Turno: APAGADO";
+  el("toggleShift").textContent = on ? "🕒 Turno: ACTIVADO" : "🕒 Turno: DESACTIVADO";
 }
 el("toggleShift").addEventListener("click", () => {
   state.shiftEnabled = !(state.shiftEnabled !== false);
@@ -617,28 +660,63 @@ el("toggleShift").addEventListener("click", () => {
   }
 });
 
+/* ====== PRESETS ====== */
 function buildPresetLabel(p) { return `${p.name} — ${p.goalMin}m / ${p.grams}g`; }
 
-function getStandardPreset(type) {
-  return {
-    id: "standard",
-    name: "Estándar",
-    goalMin: Number(state.servingDefaults?.[type]?.goalMin || 0),
-    grams: Number(state.servingDefaults?.[type]?.grams || 0)
-  };
-}
-
 function getPresetsForType(type) {
-  const standard = getStandardPreset(type);
-  const custom = (state.servingPresets?.[type] || []).slice();
-  return [standard, ...custom];
+  return (state.servingPresets?.[type] || []).slice();
 }
 
 function getPresetById(type, id) {
   const list = getPresetsForType(type);
-  return list.find(p => p.id === id) || getStandardPreset(type);
+  return list.find(p => p.id === id) || list[0] || { id:"", name:"—", goalMin:0, grams:0 };
 }
 
+function updateMainPresetLabels() {
+  const pB = getPresetById("bucked", state.activePresetId.bucked);
+  const pR = getPresetById("branch", state.activePresetId.branch);
+  el("presetBucked").textContent = `Preajuste: ${pB.name} (${pB.goalMin}m / ${pB.grams}g)`;
+  el("presetBranch").textContent = `Preajuste: ${pR.name} (${pR.goalMin}m / ${pR.grams}g)`;
+}
+
+/* Main-screen fast dropdowns */
+function renderQuickPresetSelects() {
+  const bSel = el("quickPresetBuckedSelect");
+  const rSel = el("quickPresetBranchSelect");
+
+  bSel.innerHTML = "";
+  getPresetsForType("bucked").forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.textContent = "Bucked: " + buildPresetLabel(p);
+    bSel.appendChild(opt);
+  });
+  bSel.value = state.activePresetId.bucked;
+
+  rSel.innerHTML = "";
+  getPresetsForType("branch").forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.textContent = "Branch: " + buildPresetLabel(p);
+    rSel.appendChild(opt);
+  });
+  rSel.value = state.activePresetId.branch;
+}
+
+el("quickPresetBuckedSelect").addEventListener("change", () => {
+  state.activePresetId.bucked = el("quickPresetBuckedSelect").value;
+  saveState();
+  updateMainPresetLabels();
+  syncActiveUI();
+});
+el("quickPresetBranchSelect").addEventListener("change", () => {
+  state.activePresetId.branch = el("quickPresetBranchSelect").value;
+  saveState();
+  updateMainPresetLabels();
+  syncActiveUI();
+});
+
+/* Settings default preset dropdowns */
 function renderDefaultPresetDropdowns() {
   ["bucked","branch"].forEach(type => {
     const sel = el(type === "bucked" ? "defaultPresetBucked" : "defaultPresetBranch");
@@ -652,36 +730,35 @@ function renderDefaultPresetDropdowns() {
       sel.appendChild(opt);
     });
 
-    sel.value = presets.some(p => p.id === state.activePresetId[type]) ? state.activePresetId[type] : "standard";
+    sel.value = state.activePresetId[type];
   });
 
   updateMainPresetLabels();
-}
-
-function updateMainPresetLabels() {
-  const pB = getPresetById("bucked", state.activePresetId.bucked || "standard");
-  const pR = getPresetById("branch", state.activePresetId.branch || "standard");
-  el("presetBucked").textContent = `Preset: ${pB.name} (${pB.goalMin}m / ${pB.grams}g)`;
-  el("presetBranch").textContent = `Preset: ${pR.name} (${pR.goalMin}m / ${pR.grams}g)`;
+  renderQuickPresetSelects();
 }
 
 el("defaultPresetBucked").addEventListener("change", () => {
   state.activePresetId.bucked = el("defaultPresetBucked").value;
   saveState();
   updateMainPresetLabels();
+  renderQuickPresetSelects();
+  syncActiveUI();
 });
 el("defaultPresetBranch").addEventListener("change", () => {
   state.activePresetId.branch = el("defaultPresetBranch").value;
   saveState();
   updateMainPresetLabels();
+  renderQuickPresetSelects();
+  syncActiveUI();
 });
 
+/* Settings manage list */
 function renderPresetManageList() {
   const type = el("presetTypeManage").value;
   const sel = el("presetSelectManage");
   const presets = getPresetsForType(type);
 
-  const current = sel.value || "standard";
+  const current = sel.value || presets[0]?.id;
   sel.innerHTML = "";
 
   presets.forEach(p => {
@@ -691,7 +768,7 @@ function renderPresetManageList() {
     sel.appendChild(opt);
   });
 
-  sel.value = presets.some(p => p.id === current) ? current : "standard";
+  sel.value = presets.some(p => p.id === current) ? current : (presets[0]?.id || "");
   applyManagePresetToInputs();
   syncManageDelete();
 }
@@ -705,7 +782,10 @@ function applyManagePresetToInputs() {
 }
 
 function syncManageDelete() {
-  el("deleteServingPreset").disabled = (el("presetSelectManage").value === "standard");
+  const id = el("presetSelectManage").value;
+  el("deleteServingPreset").disabled = !id;
+  el("renameServingPreset").disabled = !id;
+  el("saveServingPreset").disabled = !id;
 }
 
 el("presetTypeManage").addEventListener("change", renderPresetManageList);
@@ -714,45 +794,110 @@ el("presetSelectManage").addEventListener("change", () => {
   syncManageDelete();
 });
 
+/* Save Changes */
 el("saveServingPreset").addEventListener("click", () => {
+  const type = el("presetTypeManage").value;
+  const id = el("presetSelectManage").value;
+  const goalMin = Number(el("presetGoalMin").value || 0);
+  const grams = Number(el("presetGrams").value || 0);
+
+  if (goalMin <= 0) { alert("Ingresa un número válido de minutos."); return; }
+  if (grams < 0) { alert("Ingresa un número válido de gramos."); return; }
+
+  const list = state.servingPresets[type] || [];
+  const item = list.find(p => p.id === id);
+  if (!item) return;
+
+  item.goalMin = Math.round(goalMin);
+  item.grams = Math.round(grams);
+
+  saveState();
+  renderPresetManageList();
+  renderDefaultPresetDropdowns();
+  renderQuickPresetSelects();
+  updateMainPresetLabels();
+  syncActiveUI();
+  alert("Preajuste actualizado.");
+});
+
+/* Add New Preset */
+el("addServingPreset").addEventListener("click", () => {
   const type = el("presetTypeManage").value;
   const goalMin = Number(el("presetGoalMin").value || 0);
   const grams = Number(el("presetGrams").value || 0);
 
-  if (goalMin <= 0) { alert("Ingresa un número válido de minutos para la meta."); return; }
-  if (grams < 0) { alert("Ingresa un número válido de gramos estimados."); return; }
+  if (goalMin <= 0) { alert("Ingresa un número válido de minutos."); return; }
+  if (grams < 0) { alert("Ingresa un número válido de gramos."); return; }
 
-  const name = (prompt("Nombre del preset (ejemplo: Mi Promedio, Nugs Chicos, Ritmo Rápido):") || "").trim();
+  const name = (prompt("Nombre del nuevo preajuste:", "") || "").trim();
   if (!name) return;
 
-  const preset = { id: uid(), name, goalMin: Math.round(goalMin), grams: Math.round(grams) };
-  state.servingPresets[type].push(preset);
+  const newPreset = { id: uid(), name, goalMin: Math.round(goalMin), grams: Math.round(grams) };
+  state.servingPresets[type].push(newPreset);
+  state.activePresetId[type] = newPreset.id;
+
   saveState();
 
   renderPresetManageList();
   renderDefaultPresetDropdowns();
+  renderQuickPresetSelects();
+  updateMainPresetLabels();
+  syncActiveUI();
 
-  el("presetSelectManage").value = preset.id;
+  el("presetSelectManage").value = newPreset.id;
   applyManagePresetToInputs();
   syncManageDelete();
 
-  alert("Preset guardado.");
+  alert("Nuevo preajuste agregado.");
 });
 
+/* Rename */
+el("renameServingPreset").addEventListener("click", () => {
+  const type = el("presetTypeManage").value;
+  const id = el("presetSelectManage").value;
+  const list = state.servingPresets[type] || [];
+  const item = list.find(p => p.id === id);
+  if (!item) return;
+
+  const name = (prompt("Nombre del preajuste:", item.name || "") || "").trim();
+  if (!name) return;
+
+  item.name = name;
+  saveState();
+  renderPresetManageList();
+  renderDefaultPresetDropdowns();
+  renderQuickPresetSelects();
+  updateMainPresetLabels();
+  syncActiveUI();
+});
+
+/* Delete */
 el("deleteServingPreset").addEventListener("click", () => {
   const type = el("presetTypeManage").value;
   const id = el("presetSelectManage").value;
-  if (id === "standard") return;
-  if (!confirm("¿Eliminar este preset?")) return;
+  if (!id) return;
+
+  const isSeed = seededPresets[type].some(p => p.id === id);
+  const msg = isSeed
+    ? "¿Eliminar este preajuste PREDETERMINADO? (Puedes recargar los predeterminados borrando Datos del sitio web.)"
+    : "¿Eliminar este preajuste?";
+  if (!confirm(msg)) return;
 
   state.servingPresets[type] = (state.servingPresets[type] || []).filter(p => p.id !== id);
-  if (state.activePresetId[type] === id) state.activePresetId[type] = "standard";
+
+  if (state.activePresetId[type] === id) {
+    state.activePresetId[type] = (state.servingPresets[type][0]?.id || seededPresets[type][0].id);
+  }
 
   saveState();
   renderPresetManageList();
   renderDefaultPresetDropdowns();
+  renderQuickPresetSelects();
+  updateMainPresetLabels();
+  syncActiveUI();
 });
 
+/* ====== SCHEDULE BLOCKS ====== */
 function buildBlocksFromSchedule(s) {
   const w1s = timeToDateToday(s.w1s), w1e = timeToDateToday(s.w1e);
   const b1e = new Date(w1e.getTime() + Number(s.b1m||0)*60000);
@@ -774,7 +919,7 @@ function buildBlocksFromSchedule(s) {
     { key:"WORK",  label:"RECORTE",  start:w3s, end:w3e, checkpoint:"gB2" },
     { key:"BREAK", label:"DESCANSO 2", start:w3e, end:b2e },
     { key:"WORK",  label:"RECORTE",  start:w4s, end:w4e, checkpoint:"gE" },
-    { key:"CLEANUP", label:"LIMPIEZA / CHECAR SALIDA", start:w4e, end:shiftEnd }
+    { key:"CLEANUP", label:"LIMPIEZA / SALIDA", start:w4e, end:shiftEnd }
   ];
 }
 
@@ -794,15 +939,39 @@ function phaseLabel(key, label) {
   return [label || "FUERA", "⚫"];
 }
 
+/* ====== ACTIVE SERVING ====== */
 function getActiveServing() { return state.activeServing; }
-
 function setActiveServing(obj) { state.activeServing = obj; saveState(); syncActiveUI(); }
 function clearActiveServing() { state.activeServing = null; saveState(); syncActiveUI(); }
+
+/* PAUSE SUPPORT */
+function getActiveElapsedMs(a) {
+  if (!a) return 0;
+  const now = Date.now();
+  const pausedTotal = Number(a.pausedMs || 0);
+  const extraPaused = a.pausedAt ? (now - a.pausedAt) : 0;
+  return Math.max(0, (now - a.startedAt) - pausedTotal - extraPaused);
+}
+function pauseActiveServing() {
+  const a = getActiveServing();
+  if (!a || a.pausedAt) return;
+  a.pausedAt = Date.now();
+  saveState();
+  syncActiveUI();
+}
+function resumeActiveServing() {
+  const a = getActiveServing();
+  if (!a || !a.pausedAt) return;
+  a.pausedMs = Number(a.pausedMs || 0) + (Date.now() - a.pausedAt);
+  a.pausedAt = null;
+  saveState();
+  syncActiveUI();
+}
 
 function startServing(type) {
   if (getActiveServing()) return;
 
-  const presetId = state.activePresetId?.[type] || "standard";
+  const presetId = state.activePresetId?.[type];
   const p = getPresetById(type, presetId);
 
   const log = getTodayLog();
@@ -813,15 +982,25 @@ function startServing(type) {
     startedAt: Date.now(),
     goalMin: Math.round(Number(p.goalMin || 0)),
     grams: Math.round(Number(p.grams || 0)),
-    presetName: p.name
+    presetName: p.name,
+    pausedAt: null,
+    pausedMs: 0
   });
+}
+
+function confirmFinish(type, elapsedMs, grams, presetName, pausedAt) {
+  const elapsed = fmtMMSS(elapsedMs);
+  const pausedTxt = pausedAt ? "\n\n(Está PAUSADO)" : "";
+  return confirm(
+    `¿Terminar ${type.toUpperCase()}?\n\nTiempo: ${elapsed}\nGramos: ${Math.round(grams||0)}g\nPreajuste: ${presetName || ""}${pausedTxt}`
+  );
 }
 
 function finishServing() {
   const a = getActiveServing();
   if (!a) return;
 
-  const ms = Date.now() - a.startedAt;
+  const ms = getActiveElapsedMs(a);
   if (ms <= 0) { clearActiveServing(); return; }
 
   const entry = {
@@ -842,8 +1021,16 @@ function finishServing() {
 
 function handleTap(type) {
   const a = getActiveServing();
+
   if (!a) { startServing(type); return; }
-  if (a.type === type) { finishServing(); return; }
+
+  if (a.type === type) {
+    const ms = getActiveElapsedMs(a);
+    const ok = confirmFinish(a.type, ms, a.grams, a.presetName, a.pausedAt);
+    if (!ok) return;
+    finishServing();
+    return;
+  }
 
   const ok = confirm(`Tienes un ${a.type.toUpperCase()} activo.\n\n¿Terminarlo e iniciar ${type.toUpperCase()}?`);
   if (!ok) return;
@@ -855,9 +1042,16 @@ function handleTap(type) {
 el("btnBucked").addEventListener("click", () => handleTap("bucked"));
 el("btnBranch").addEventListener("click", () => handleTap("branch"));
 
+el("pauseActive").addEventListener("click", () => {
+  const a = getActiveServing();
+  if (!a) return;
+  if (a.pausedAt) resumeActiveServing();
+  else pauseActiveServing();
+});
+
 el("cancelActive").addEventListener("click", () => {
   if (!getActiveServing()) return;
-  if (!confirm("¿Cancelar el servicio activo (sin guardarlo en el registro)?")) return;
+  if (!confirm("¿Cancelar el servicio activo (sin guardar en el registro)?")) return;
   clearActiveServing();
 });
 
@@ -869,11 +1063,14 @@ function syncActiveUI() {
   el("hintBucked").textContent = "Toca para iniciar";
   el("hintBranch").textContent = "Toca para iniciar";
   el("activePill").textContent = "Sin servicio activo";
+
   el("cancelActive").classList.add("hide");
+  el("pauseActive").classList.add("hide");
+  el("pauseActive").textContent = "Pausar";
 
   if (!a) return;
 
-  const ms = Date.now() - a.startedAt;
+  const ms = getActiveElapsedMs(a);
   const elapsed = fmtMMSS(ms);
   const goalMs = (a.goalMin || 0) * 60000;
   let delta = "";
@@ -883,17 +1080,20 @@ function syncActiveUI() {
     delta = ` • ${sign}${fmtMMSS(Math.abs(diff))} vs ${a.goalMin}:00`;
   }
 
-  el("activePill").textContent = `${a.type.toUpperCase()} • ${elapsed}${delta} • ${a.grams}g (${a.presetName})`;
+  const pausedTag = a.pausedAt ? " • PAUSADO" : "";
+  el("activePill").textContent = `${a.type.toUpperCase()} • ${elapsed}${delta}${pausedTag} • ${a.grams}g (${a.presetName})`;
 
   if (a.type === "bucked") {
     el("btnBucked").classList.add("active");
-    el("hintBucked").textContent = "Toca otra vez para terminar";
+    el("hintBucked").textContent = a.pausedAt ? "Pausado" : "Toca otra vez para terminar";
   } else {
     el("btnBranch").classList.add("active");
-    el("hintBranch").textContent = "Toca otra vez para terminar";
+    el("hintBranch").textContent = a.pausedAt ? "Pausado" : "Toca otra vez para terminar";
   }
 
   el("cancelActive").classList.remove("hide");
+  el("pauseActive").classList.remove("hide");
+  el("pauseActive").textContent = a.pausedAt ? "Reanudar" : "Pausar";
 }
 
 /* GOAL BAR COLOR */
@@ -911,6 +1111,7 @@ function colorForProgress(p) {
   }
 }
 
+/* ====== LOG + TOTALS ====== */
 function renderLogAndTotals() {
   const log = getTodayLog();
   const body = el("logBody");
@@ -982,14 +1183,15 @@ function renderLogAndTotals() {
   });
 }
 
+/* ====== GOAL UI ====== */
 function updateGoalUI(totalGrams) {
   if (state.shiftEnabled === false) {
     el("goalLabel").textContent = "Meta: —";
     el("goalDelta").textContent = "";
     el("goalFill").style.width = "0%";
     el("goalFill").style.background = "#333";
-    el("goalHint").textContent = "El modo turno está APAGADO.";
-    el("goalStatusSettings").textContent = "El modo turno está APAGADO.";
+    el("goalHint").textContent = "Modo turno DESACTIVADO.";
+    el("goalStatusSettings").textContent = "Modo turno DESACTIVADO.";
     return;
   }
 
@@ -998,9 +1200,9 @@ function updateGoalUI(totalGrams) {
 
   const checkpoints = [
     { key:"gB1", label:"Descanso 1", at: timeToDateToday(s.w1e) },
-    { key:"gL",  label:"Comida",   at: timeToDateToday(s.w2e) },
+    { key:"gL",  label:"Comida",     at: timeToDateToday(s.w2e) },
     { key:"gB2", label:"Descanso 2", at: timeToDateToday(s.w3e) },
-    { key:"gE",  label:"Final",     at: timeToDateToday(s.w4e) }
+    { key:"gE",  label:"Final",      at: timeToDateToday(s.w4e) }
   ];
 
   const goals = state.goals || {};
@@ -1012,8 +1214,8 @@ function updateGoalUI(totalGrams) {
     el("goalDelta").textContent = "";
     el("goalFill").style.width = "0%";
     el("goalFill").style.background = "#333";
-    el("goalHint").textContent = "Define metas en Ajustes para ver tu ritmo.";
-    el("goalStatusSettings").textContent = "Configura tus metas y verás la barra actualizarse en vivo.";
+    el("goalHint").textContent = "Configura metas en Ajustes para seguir tu ritmo.";
+    el("goalStatusSettings").textContent = "Configura tus metas y verás la barra en vivo.";
     return;
   }
 
@@ -1030,29 +1232,30 @@ function updateGoalUI(totalGrams) {
   const minsLeft = Math.max(0, Math.round((target.at - now) / 60000));
 
   el("goalLabel").textContent = `${target.label}: ${Math.round(totalGrams)}/${Math.round(goal)}g`;
-  el("goalDelta").textContent = ahead ? `Vas arriba por ${Math.round(diff)}g` : `Vas abajo por ${Math.round(gramsRemaining)}g`;
+  el("goalDelta").textContent = ahead ? `Vas arriba por ${Math.round(diff)}g` : `Te faltan ${Math.round(gramsRemaining)}g`;
 
   if (ahead) {
     el("goalHint").textContent = "Vas al ritmo ✔";
   } else if (minsLeft <= 0) {
-    el("goalHint").textContent = `Pasó el punto • Faltan ${Math.round(gramsRemaining)}g`;
+    el("goalHint").textContent = `Se pasó el punto • Faltan ${Math.round(gramsRemaining)}g`;
   } else {
     const paceNeeded = Math.round((gramsRemaining / minsLeft) * 60);
-    const pB = getPresetById("bucked", state.activePresetId?.bucked || "standard");
-    const pR = getPresetById("branch", state.activePresetId?.branch || "standard");
+    const pB = getPresetById("bucked", state.activePresetId?.bucked);
+    const pR = getPresetById("branch", state.activePresetId?.branch);
     const buckedServ = Math.max(1, Math.ceil(gramsRemaining / Math.max(1, Number(pB.grams || 0))));
     const branchServ = Math.max(1, Math.ceil(gramsRemaining / Math.max(1, Number(pR.grams || 0))));
     const buckedMaxMin = (minsLeft / buckedServ);
     const branchMaxMin = (minsLeft / branchServ);
 
     el("goalHint").textContent =
-      `Necesitas ~${paceNeeded} g/h • ${minsLeft} min restantes • Bucked ≤ ${buckedMaxMin.toFixed(1)} min/serv • Branch ≤ ${branchMaxMin.toFixed(1)} min/serv`;
+      `Necesitas ~${paceNeeded} g/h • ${minsLeft} min • Bucked ≤ ${buckedMaxMin.toFixed(1)} min/serv • Branch ≤ ${branchMaxMin.toFixed(1)} min/serv`;
   }
 
   el("goalStatusSettings").textContent =
-    `Objetivo: ${target.label} • ${minsLeft} min restantes • Meta ${Math.round(goal)}g`;
+    `Objetivo: ${target.label} • ${minsLeft} min • Meta ${Math.round(goal)}g`;
 }
 
+/* ====== CLOCK ====== */
 function tickClock() {
   const now = new Date();
 
@@ -1081,11 +1284,11 @@ function tickClock() {
       if (idx >= 0 && idx < blocks.length - 1) next = blocks[idx + 1];
       if (!next && now < blocks[0].start) next = blocks[0];
 
-      el("nextUp").textContent = next ? `Sigue: ${next.label} @ ${fmtTime(next.start)}` : "Sigue: —";
+      el("nextUp").textContent = next ? `Siguiente: ${next.label} @ ${fmtTime(next.start)}` : "Siguiente: —";
     } else {
       if (b.label === "ANTES DEL TURNO") {
-        el("countdown").textContent = `Inicia en: ${fmtMMSS(b.end - now)}`;
-        el("nextUp").textContent = `Sigue: RECORTE @ ${fmtTime(b.end)}`;
+        el("countdown").textContent = `Empieza en: ${fmtMMSS(b.end - now)}`;
+        el("nextUp").textContent = `Siguiente: RECORTE @ ${fmtTime(b.end)}`;
       } else {
         el("countdown").textContent = "—";
         el("nextUp").textContent = "Turno terminado.";
@@ -1102,6 +1305,7 @@ function tickClock() {
   }
 }
 
+/* ====== SETTINGS SAVE ====== */
 const idsSchedule = ["w1s","w1e","b1m","w2s","w2e","lm","w3s","w3e","b2m","w4s","w4e","shiftEnd"];
 const idsGoals = ["gB1","gL","gB2","gE"];
 
@@ -1137,19 +1341,22 @@ el("saveGoals").addEventListener("click", () => {
 });
 
 el("clearToday").addEventListener("click", () => {
-  if (!confirm("¿Borrar el registro de servicios de hoy?")) return;
+  if (!confirm("¿Borrar el registro de hoy?")) return;
   const k = todayKey();
   state.today[k] = { servings: [], firstStartMs: null };
   saveState();
   renderLogAndTotals();
 });
 
-/* INIT */
+/* ====== INIT ====== */
 applyScheduleToInputs();
 applyGoalsToInputs();
 
 renderPresetManageList();
 renderDefaultPresetDropdowns();
+renderQuickPresetSelects();
+updateMainPresetLabels();
+
 syncActiveUI();
 renderLogAndTotals();
 
