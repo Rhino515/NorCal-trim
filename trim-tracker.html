@@ -104,7 +104,10 @@
 </table>
 
 <button onclick="addRow()">Agregar Fila</button>
-<button class="clear-all" onclick="clearAllRows()">Borrar Todo</button>
+
+<!-- ✅ CHANGED: clears ONLY past entries (keeps today) -->
+<button class="clear-all" onclick="clearPastEntries()">Borrar Entradas Pasadas</button>
+
 <button onclick="exportCSV()">Exportar CSV</button>
 <input accept=".csv" id="csvFileInput" onchange="importCSV(event)" style="display: none;" type="file"/>
 <button onclick="document.getElementById('csvFileInput').click()">Importar CSV</button>
@@ -209,10 +212,10 @@
     updateTotal();
 
     const delBtn = document.createElement('button');
-    delBtn.textContent = 'Delete'; // still English text; you can change if you want
+    delBtn.textContent = 'Delete';
     delBtn.className = 'delete-row';
     delBtn.onclick = () => {
-      if (confirm('Delete this row?')) {
+      if (confirm('¿Borrar esta fila?')) {
         row.remove();
         debounceSave();
         updateDailyTotals();
@@ -326,26 +329,38 @@
           li.textContent = `${date}: ${total.toFixed(2)}g`;
           totalsList.appendChild(li);
         });
-    } else {
-      console.warn('#totalsList element not found. Daily totals list not updated.');
     }
-
-    // NOTE: we DO NOT call updateView() here
   }
 
-  function clearAllRows() {
-    const confirmMsg =
-      lang === 'es'
-        ? '¿Estás seguro de que deseas borrar todas las filas?'
-        : 'Are you sure you want to delete all rows?';
-    if (confirm(confirmMsg)) {
-      const tbody = document.getElementById('tableBody');
-      if (tbody) tbody.innerHTML = '';
-      addRow({}, true);
-      debounceSave();
-      updateDailyTotals();
-      updateView();
+  /* ✅ NEW: Clears ONLY past entries, keeps today's rows */
+  function clearPastEntries() {
+    const today = new Date().toISOString().slice(0, 10);
+    const confirmMsg = `¿Estás seguro de que deseas borrar TODAS las entradas pasadas y mantener solo las de hoy (${today})?`;
+    if (!confirm(confirmMsg)) return;
+
+    const tbody = document.getElementById('tableBody');
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll('tr'))
+      .filter(r => !r.classList.contains('collapsed-row-header'));
+
+    rows.forEach(row => {
+      const dateVal = row.querySelector('input[type="date"]')?.value;
+      if (dateVal && dateVal !== today) row.remove();
+    });
+
+    // If no rows remain for today, add a fresh one
+    const hasToday = Array.from(tbody.querySelectorAll('tr'))
+      .filter(r => !r.classList.contains('collapsed-row-header'))
+      .some(r => r.querySelector('input[type="date"]')?.value === today);
+
+    if (!hasToday) {
+      addRow({ date: today, strain: '', grams: ['', '', ''] }, true);
     }
+
+    debounceSave();
+    updateDailyTotals();
+    updateView();
   }
 
   function saveData() {
@@ -371,11 +386,9 @@
         if (Array.isArray(data)) {
           data.forEach(entry => addRow(entry, true));
         } else {
-          console.error('Stored data is not an array:', data);
           addRow({}, true);
         }
       } catch (e) {
-        console.error('Error parsing stored data:', e);
         addRow({}, true);
       }
     } else {
@@ -438,11 +451,9 @@
               addRow({ date, strain, grams }, true);
               importedCount++;
             } else {
-              console.warn('Skipping invalid row (date format):', line);
               skippedCount++;
             }
           } else {
-            console.warn('Skipping invalid row (column count):', line);
             skippedCount++;
           }
         });
@@ -450,25 +461,12 @@
         updateDailyTotals();
         updateView();
 
-        let feedbackMsg =
-          lang === 'es'
-            ? `Importación completada. ${importedCount} fila(s) importada(s).`
-            : `Import completed. ${importedCount} row(s) imported.`;
-        if (skippedCount > 0) {
-          feedbackMsg +=
-            lang === 'es'
-              ? ` ${skippedCount} fila(s) omitida(s) debido a errores.`
-              : ` ${skippedCount} row(s) skipped due to errors.`;
-        }
+        let feedbackMsg = `Importación completada. ${importedCount} fila(s) importada(s).`;
+        if (skippedCount > 0) feedbackMsg += ` ${skippedCount} fila(s) omitida(s) por errores.`;
         alert(feedbackMsg);
       } catch (e) {
-        console.error('Error importing CSV:', e);
-        alert(lang === 'es' ? 'Error al importar el archivo CSV.' : 'Error importing CSV file.');
+        alert('Error al importar el archivo CSV.');
       }
-    };
-    reader.onerror = function () {
-      console.error('Error reading file:', reader.error);
-      alert(lang === 'es' ? 'Error al leer el archivo.' : 'Error reading file.');
     };
     reader.readAsText(file);
     event.target.value = '';
