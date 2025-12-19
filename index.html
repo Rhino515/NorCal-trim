@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8"/>
 <title>NorCal Trim Calculator</title>
@@ -34,20 +34,11 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  button:hover {
-    background-color: darkgreen;
-  }
-  img {
-    margin-top: 0.6em;
-    width: 200px;
-  }
-  #result {
-    margin-top: 0.6em;
-    font-size: 1.2em;
-  }
-  .install-links {
-    margin-top: 0.6em;
-  }
+  button:hover { background-color: darkgreen; }
+  img { margin-top: 0.6em; width: 200px; }
+  #result { margin-top: 0.6em; font-size: 1.2em; }
+
+  .install-links { margin-top: 0.6em; }
   .install-links a {
     display: inline-block;
     margin: 0.5em;
@@ -57,24 +48,17 @@
     text-decoration: none;
     border-radius: 4px;
   }
-  .install-links a:hover {
-    background-color: #666;
-  }
+  .install-links a:hover { background-color: #666; }
+
   table {
     margin: 2em auto;
     border-collapse: collapse;
     width: 80%;
   }
-  th, td {
-    border: 1px solid #555;
-    padding: 0.5em;
-  }
-  th {
-    background-color: #333;
-  }
-  td[contenteditable="true"] {
-    background-color: #222;
-  }
+  th, td { border: 1px solid #555; padding: 0.5em; }
+  th { background-color: #333; }
+  td[contenteditable="true"] { background-color: #222; }
+
   .delete-button {
     background-color: red;
     color: white;
@@ -83,22 +67,8 @@
     cursor: pointer;
     border-radius: 4px;
   }
-  .delete-button:hover {
-    background-color: darkred;
-  }
-  .clear-all-button {
-    background-color: orange;
-    color: black;
-    border: none;
-    padding: 0.5em 1em;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .clear-all-button:hover {
-    background-color: darkorange;
-  }
+  .delete-button:hover { background-color: darkred; }
 
-  /* UPDATED: header layout + green amount */
   .past-period-header {
     background-color: #444;
     color: white;
@@ -107,18 +77,7 @@
     margin-top: 1em;
     border-radius: 4px;
     text-align: left;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
   }
-  .past-period-amount {
-    color: #0f0;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
   .past-period-content {
     display: none;
     margin-left: 1em;
@@ -126,11 +85,13 @@
     border: 1px solid #555;
     border-top: none;
   }
-  .past-period-content.open {
-    display: block;
+  .past-period-content.open { display: block; }
+  .past-period-total {
+    color: #0f0;
+    font-weight: bold;
+    margin-left: 8px;
   }
 
-  /* ✅ ADDED: Lightning bolt link next to "Acerca del Creador" */
   .creatorTitle {
     display: inline-flex;
     align-items: center;
@@ -153,12 +114,29 @@
     cursor: pointer;
     user-select: none;
   }
-  .secretBolt:hover {
-    background: #0f0;
-    color: #000;
+  .secretBolt:hover { background:#0f0; color:#000; }
+  .secretBolt:active { transform: scale(0.98); }
+
+  /* ✅ No big green square (no border/background box) */
+  .collapsible-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+    padding: 0.2em 0.2em;
   }
-  .secretBolt:active {
-    transform: scale(0.95);
+  .collapse-indicator {
+    color: #0f0;
+    font-weight: bold;
+    min-width: 34px;
+    text-align: center;
+  }
+
+  /* ✅ Keep the important total line green (not a big box) */
+  .important-green {
+    color: #0f0;
+    font-weight: 800;
+    font-size: 1.08em;
   }
 </style>
 </head>
@@ -166,16 +144,14 @@
 
 <img alt="NorCal Logo" src="norcal_icon.png"/>
 
-<!-- 🔹 New Trim Tracker daily total display (Mexican Spanish) -->
-<div id="trackerSummary" style="margin-top:0.4em;font-size:0.95em;color:#0f0;">
-  <strong>Total de hoy en Trim Tracker:</strong>
-  <span id="trackerTotalDisplay">0g</span>
+<div id="trackerDailyTotalDisplay"
+     style="margin-top:0.4em;font-size:0.95em;color:#0f0;font-weight:bold;">
 </div>
 
-<p>Ingresa el total de gramos cortados:</p>
-<input id="grams" placeholder="e.g. 1200" type="number"/>
+<p>Ingresa el total de gramos recortados:</p>
+<input id="grams" placeholder="ej. 1200" type="number"/>
 <br/>
-<button id="import-tracker-total">Agregar el Total de Hoy del Trim Tracker</button>
+<button id="import-tracker-total">Agregar el total de hoy del Trim Tracker</button>
 <br/>
 <button onclick="calculate()">Calcular</button>
 <br/>
@@ -184,7 +160,7 @@
 
 <div class="install-links">
   <a href="trim-tracker.html">Ir al Trim Tracker</a>
-  <a class="nav-button" href="help.html">Cómo Usar la App</a>
+  <a class="nav-button" href="help.html">Cómo usar la app</a>
 </div>
 
 <div id="payPeriodLabel" style="margin-top: 0.6em; color: #0f0; font-weight: bold;"></div>
@@ -192,9 +168,9 @@
 <table id="sessionTable">
   <thead>
     <tr>
-      <th>Fecha y Día</th>
+      <th>Fecha</th>
       <th>Gramos</th>
-      <th>Pago de Bono</th>
+      <th>Pago de bono</th>
       <th>Acción</th>
     </tr>
   </thead>
@@ -209,52 +185,43 @@
 
 <div style="margin-top: 0.6em;">
   <input accept=".csv" id="csvInput" onchange="importCSV(event)" style="display:none" type="file"/>
-  <button onclick="document.getElementById('csvInput').click()" style="background-color:#28a745;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Importar CSV</button>
-</div>
-
-<div style="margin-top: 0.6em;">
-  <button onclick="downloadCSV()" style="background-color:green;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Exportar CSV</button>
-</div>
-
-<div style="margin-top: 0.6em;">
-  <button onclick="clearCurrentPayPeriod()" style="background-color:red;color:white;padding: 0.5em 1em;border:none;border-radius:4px;cursor:pointer;">Borrar el período de pago actual</button>
-</div>
-<div style="margin-top: 0.6em;">
-  <button onclick="clearAllPastPayPeriods()"
-    style="background-color:#b30000;color:white;padding: 0.5em 1em;
-    border:none;border-radius:4px;cursor:pointer;">
-    Borrar Todos los Períodos de Pago Pasados
+  <button style="background-color:#28a745;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;"
+          onclick="document.getElementById('csvInput').click()">
+    Importar CSV
   </button>
 </div>
 
-<script>
-  function clearAllPastPayPeriods() {
-    const confirmMsg = "¿Estás seguro de que quieres borrar TODOS los períodos de pago pasados? Esto no se puede deshacer.";
-    if (!confirm(confirmMsg)) return;
+<div style="margin-top: 0.6em;">
+  <button style="background-color:green;color:white;padding: 0.45em 1em;border:none;border-radius:4px;cursor:pointer;font-weight:bold;"
+          onclick="downloadCSV()">
+    Exportar CSV
+  </button>
+</div>
 
-    let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+<div style="margin-top: 0.6em;">
+  <button style="background-color:red;color:white;padding: 0.5em 1em;border:none;border-radius:4px;cursor:pointer;"
+          onclick="clearCurrentPayPeriod()">
+    Borrar período de pago actual
+  </button>
+</div>
+<div style="margin-top: 0.6em;">
+  <button style="background-color:#b30000;color:white;padding: 0.5em 1em;border:none;border-radius:4px;cursor:pointer;"
+          onclick="clearAllPastPayPeriods()">
+    Borrar todos los períodos de pago pasados
+  </button>
+</div>
 
-    const current = getCurrentPayPeriod();
-    const currentStart = new Date(current.start);
-    const currentEnd = new Date(current.end);
-    currentEnd.setHours(23, 59, 59, 999);
-
-    history = history.filter(entry => {
-      const d = new Date(entry.date);
-      d.setHours(0, 0, 0, 0);
-      return d >= currentStart && d <= currentEnd;
-    });
-
-    localStorage.setItem('trimHistory', JSON.stringify(history));
-    updateSessionTable();
-  }
-</script>
-
+<!-- ✅ Promedios de Pago por Hora (con autosave) -->
 <div style="margin-top: 1.2em; border-top: 1px solid #444; padding-top: 1em;">
-  <h2 onclick="togglePayCalc()" style="color:#0f0; cursor:pointer;">Promedios de Pago por Hora ▼</h2>
+  <h2 class="collapsible-header" style="color:#0f0; cursor:pointer;" onclick="togglePayCalc()">
+    <span id="payCalcIndicator" class="collapse-indicator">[+]</span>
+    Promedios de pago por hora
+  </h2>
+
   <div id="payCalcSection" style="display:none;">
-    <p>Ingresa tu pago por hora y tus horas regulares/extra, luego elige un rango de fechas:</p>
-    <label>Pago por hora: <input id="hourlyRate" step="0.01" type="number"/></label><br/>
+    <p>Tus datos se quedan guardados hasta que los borres.</p>
+
+    <label>Pago por hora: <input id="hourlyRate" type="number" step="0.01"/></label><br/>
 
     <label>
       Horas regulares:
@@ -268,27 +235,39 @@
       <input id="overtimeMinutes" type="number" min="0" max="59" step="1" placeholder="Minutos"/>
     </label><br/>
 
+    <label>
+      Doble turno:
+      <input id="doubletimeHours" type="number" min="0" step="1" placeholder="Horas"/>
+      <input id="doubletimeMinutes" type="number" min="0" max="59" step="1" placeholder="Minutos"/>
+    </label><br/>
+
     <label>Fecha de inicio: <input id="startDate" type="date"/></label><br/>
     <label>Fecha de fin: <input id="endDate" type="date"/></label><br/>
+
     <button onclick="calculateAverages()">Calcular promedios</button>
+
+    <button type="button" onclick="clearHourlyInputs()" style="background:#b30000; margin-left:8px;">
+      Borrar datos
+    </button>
+
     <div id="averageResults" style="margin-top: 0.6em; text-align: left;"></div>
   </div>
 </div>
 
+<!-- ✅ Acerca del Creador -->
 <div style="margin-top: 4em; padding-top: 2em; border-top: 1px solid #444;">
-  <!-- ✅ UPDATED: Added ⚡ link to shift-tools.html -->
   <h2 class="creatorTitle" style="color: #0f0;">
-    Acerca del Creador
+    Acerca del creador
     <a class="secretBolt" href="shift-tools.html" title="Herramientas de Turno">⚡</a>
   </h2>
-
   <p style="max-width: 600px; margin: 0 auto; font-size: 1em; line-height: 1.6;">
-    Hola, mi nombre es Andrew y trabajo como recortador profesional en NorCal Cannabis.
-    Creé la Calculadora de Trim de NorCal para ayudar a simplificar los cálculos del bono y facilitarles a los recortadores
-    el seguimiento de su progreso diario.
+    Hola, me llamo Andrew y trabajo como recortador profesional en NorCal Cannabis.
+    Creé la Calculadora de Trim de NorCal para simplificar los cálculos del bono y facilitar
+    el seguimiento del progreso diario.
     <br/><br/>
-    Esta herramienta fue diseñada para ser práctica, fácil de usar y eficiente — ayudando a los trabajadores a mantenerse organizados e informados.
-    Mi objetivo es apoyar a la comunidad de trimming con soluciones tecnológicas simples que realmente hagan la diferencia en el trabajo.
+    Esta herramienta está hecha para ser práctica, fácil de usar y rápida — ayudando a los trabajadores
+    a mantenerse organizados e informados. Mi meta es apoyar a la comunidad de trimming con herramientas
+    simples que sí hagan la diferencia en el trabajo.
   </p>
 </div>
 
@@ -312,9 +291,8 @@
       document.getElementById('result').innerText = 'Por favor ingresa una cantidad válida de gramos.';
       return;
     }
-
     const bonusPay = calculateBonus(grams);
-    document.getElementById('result').innerText = 'Bonus Pay: $' + bonusPay.toFixed(2);
+    document.getElementById('result').innerText = 'Pago de bono: $' + bonusPay.toFixed(2);
     lastCalculated = { grams: grams, bonusPay: bonusPay };
   }
 
@@ -328,7 +306,7 @@
       grams = lastCalculated.grams;
       bonusPay = lastCalculated.bonusPay;
     } else {
-      alert("Primero calcula un bono válido antes de guardar en el historial.");
+      alert("Primero calcula un bono válido antes de guardar.");
       return;
     }
 
@@ -354,45 +332,52 @@
 
     const regularHours = parseFloat(document.getElementById("regularHours").value) || 0;
     const regularMinutes = parseFloat(document.getElementById("regularMinutes").value) || 0;
+
     const overtimeHours = parseFloat(document.getElementById("overtimeHours").value) || 0;
     const overtimeMinutes = parseFloat(document.getElementById("overtimeMinutes").value) || 0;
+
+    const doubletimeHours = parseFloat(document.getElementById("doubletimeHours").value) || 0;
+    const doubletimeMinutes = parseFloat(document.getElementById("doubletimeMinutes").value) || 0;
 
     const startDate = new Date(document.getElementById("startDate").value);
     const endDate = new Date(document.getElementById("endDate").value);
 
     const totalRegularHours = regularHours + (regularMinutes / 60);
     const totalOvertimeHours = overtimeHours + (overtimeMinutes / 60);
-    const totalHoursWorked = totalRegularHours + totalOvertimeHours;
+    const totalDoubletimeHours = doubletimeHours + (doubletimeMinutes / 60);
+    const totalHoursWorked = totalRegularHours + totalOvertimeHours + totalDoubletimeHours;
 
     if (isNaN(hourlyRate) || isNaN(startDate) || isNaN(endDate) || totalHoursWorked <= 0) {
-      alert("Por favor llena todos los campos, incluyendo horas regulares y horas extra.");
+      alert("Por favor llena todos los campos (incluye regulares, extra y doble turno) y el rango de fechas.");
       return;
     }
 
     const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
     const filtered = history.filter(entry => {
-      const entryDate = new Date(entry.date);
-      entryDate.setHours(0, 0, 0, 0);
-      startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(0, 0, 0, 0);
-      return entryDate >= startDate && entryDate <= endDate;
+      const entryDate = new Date(entry.date); entryDate.setHours(0,0,0,0);
+      const s = new Date(startDate); s.setHours(0,0,0,0);
+      const e = new Date(endDate);   e.setHours(0,0,0,0);
+      return entryDate >= s && entryDate <= e;
     });
 
-    let bonusTotal = filtered.reduce((sum, entry) => sum + parseFloat(entry.bonusPay || 0), 0);
+    const bonusTotal = filtered.reduce((sum, entry) => sum + parseFloat(entry.bonusPay || 0), 0);
 
-    let regularPay = hourlyRate * totalRegularHours;
-    let overtimePay = hourlyRate * 1.5 * totalOvertimeHours;
-    let hourlyTotal = regularPay + overtimePay;
-    let totalPay = bonusTotal + hourlyTotal;
+    const regularPay = hourlyRate * totalRegularHours;
+    const overtimePay = hourlyRate * 1.5 * totalOvertimeHours;
+    const doubletimePay = hourlyRate * 2.0 * totalDoubletimeHours;
 
-    let dayDiff = Math.max(1, (endDate - startDate) / (1000 * 60 * 60 * 24) + 1);
+    const hourlyTotal = regularPay + overtimePay + doubletimePay;
+    const totalPay = bonusTotal + hourlyTotal;
 
-    let results = `
-      <p><strong>Pago de bono total:</strong> $${bonusTotal.toFixed(2)}</p>
+    const dayDiff = Math.max(1, (endDate - startDate) / (1000*60*60*24) + 1);
+
+    const results = `
+      <p><strong>Total de bono:</strong> $${bonusTotal.toFixed(2)}</p>
       <p><strong>Pago regular:</strong> $${regularPay.toFixed(2)}</p>
       <p><strong>Pago de horas extra:</strong> $${overtimePay.toFixed(2)}</p>
-      <p><strong>Pago total por hora (solo sueldo):</strong> $${hourlyTotal.toFixed(2)}</p>
-      <p><strong>Pago total (sueldo + bono):</strong> $${totalPay.toFixed(2)}</p>
+      <p><strong>Pago de doble turno:</strong> $${doubletimePay.toFixed(2)}</p>
+      <p><strong>Total de sueldo (sin bono):</strong> $${hourlyTotal.toFixed(2)}</p>
+      <p class="important-green"><strong>Total (sueldo + bono):</strong> $${totalPay.toFixed(2)}</p>
       <p><strong>Promedio diario:</strong> $${(totalPay / dayDiff).toFixed(2)}</p>
       <p><strong>Promedio semanal:</strong> $${(totalPay / dayDiff * 7).toFixed(2)}</p>
       <p><strong>Promedio quincenal:</strong> $${(totalPay / dayDiff * 14).toFixed(2)}</p>
@@ -403,13 +388,16 @@
 
   function togglePayCalc() {
     const section = document.getElementById("payCalcSection");
-    if (section) {
-      section.style.display = section.style.display === "none" ? "block" : "none";
-    }
+    const indicator = document.getElementById("payCalcIndicator");
+    if (!section) return;
+
+    const willOpen = section.style.display === "none";
+    section.style.display = willOpen ? "block" : "none";
+    if (indicator) indicator.textContent = willOpen ? "[-]" : "[+]";
   }
 
   function deleteEntry(index) {
-    const confirmMsg = "¿Estás seguro de que deseas eliminar esta entrada?";
+    const confirmMsg = "¿Seguro que quieres eliminar esta entrada?";
     if (!confirm(confirmMsg)) return;
 
     let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
@@ -419,99 +407,129 @@
   }
 </script>
 
+<!-- ✅ Auto-guardar inputs de Promedios -->
 <script>
-  function updateTrackerTotalDisplay() {
-    const todayISO = new Date().toISOString().split('T')[0];
-    const trackerTotal = localStorage.getItem('trimTrackerDailyTotal-' + todayISO);
-    const displayEl = document.getElementById('trackerTotalDisplay');
-    if (!displayEl) return;
+  const HOURLY_INPUTS_KEY = "hourlyPayInputs_v1";
 
-    if (trackerTotal) {
-      displayEl.textContent = trackerTotal + 'g';
-    } else {
-      displayEl.textContent = '0g';
-    }
+  function saveHourlyInputs() {
+    const data = {
+      hourlyRate: document.getElementById("hourlyRate")?.value ?? "",
+      regularHours: document.getElementById("regularHours")?.value ?? "",
+      regularMinutes: document.getElementById("regularMinutes")?.value ?? "",
+      overtimeHours: document.getElementById("overtimeHours")?.value ?? "",
+      overtimeMinutes: document.getElementById("overtimeMinutes")?.value ?? "",
+      doubletimeHours: document.getElementById("doubletimeHours")?.value ?? "",
+      doubletimeMinutes: document.getElementById("doubletimeMinutes")?.value ?? "",
+      startDate: document.getElementById("startDate")?.value ?? "",
+      endDate: document.getElementById("endDate")?.value ?? ""
+    };
+    localStorage.setItem(HOURLY_INPUTS_KEY, JSON.stringify(data));
+  }
+
+  function restoreHourlyInputs() {
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(HOURLY_INPUTS_KEY)) || {}; } catch { data = {}; }
+
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val !== undefined && val !== null) el.value = val;
+    };
+
+    set("hourlyRate", data.hourlyRate);
+    set("regularHours", data.regularHours);
+    set("regularMinutes", data.regularMinutes);
+    set("overtimeHours", data.overtimeHours);
+    set("overtimeMinutes", data.overtimeMinutes);
+    set("doubletimeHours", data.doubletimeHours);
+    set("doubletimeMinutes", data.doubletimeMinutes);
+    set("startDate", data.startDate);
+    set("endDate", data.endDate);
+  }
+
+  function wireHourlyAutosave() {
+    const ids = [
+      "hourlyRate",
+      "regularHours","regularMinutes",
+      "overtimeHours","overtimeMinutes",
+      "doubletimeHours","doubletimeMinutes",
+      "startDate","endDate"
+    ];
+
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener("input", saveHourlyInputs);
+      el.addEventListener("change", saveHourlyInputs);
+    });
+  }
+
+  function clearHourlyInputs() {
+    if (!confirm("¿Quieres borrar los datos de Promedios de pago por hora?")) return;
+
+    const ids = [
+      "hourlyRate",
+      "regularHours","regularMinutes",
+      "overtimeHours","overtimeMinutes",
+      "doubletimeHours","doubletimeMinutes",
+      "startDate","endDate"
+    ];
+
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+
+    localStorage.removeItem(HOURLY_INPUTS_KEY);
+
+    const results = document.getElementById("averageResults");
+    if (results) results.innerHTML = "";
   }
 </script>
 
 <script>
   function getCurrentPayPeriod() {
     const base = new Date("2025-04-13T00:00:00");
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const diffDays = Math.floor((today - base) / (1000 * 60 * 60 * 24));
+    const today = new Date(); today.setHours(0,0,0,0);
+    const diffDays = Math.floor((today - base) / (1000*60*60*24));
     const periodIndex = Math.floor(diffDays / 14);
-    const periodStart = new Date(base);
-    periodStart.setDate(base.getDate() + periodIndex * 14);
-    const periodEnd = new Date(periodStart);
-    periodEnd.setDate(periodStart.getDate() + 13);
+    const periodStart = new Date(base); periodStart.setDate(base.getDate() + periodIndex * 14);
+    const periodEnd = new Date(periodStart); periodEnd.setDate(periodStart.getDate() + 13);
     return {
       start: periodStart.toISOString().split('T')[0],
       end: periodEnd.toISOString().split('T')[0],
-      label: 'Pay Period: ' +
-             periodStart.toISOString().split('T')[0] + ' – ' + periodEnd.toISOString().split('T')[0]
+      label: 'Período de pago: ' + periodStart.toISOString().split('T')[0] + ' – ' + periodEnd.toISOString().split('T')[0]
     };
   }
 
   function getPayPeriodForDate(date) {
     const base = new Date("2025-04-13T00:00:00");
     const timeDiff = date.getTime() - base.getTime();
-    const dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const dayDiff = Math.floor(timeDiff / (1000*60*60*24));
     const periodOffset = Math.floor(dayDiff / 14);
 
-    const periodStart = new Date(base);
-    periodStart.setDate(base.getDate() + periodOffset * 14);
-    const periodEnd = new Date(periodStart);
-    periodEnd.setDate(periodStart.getDate() + 13);
+    const periodStart = new Date(base); periodStart.setDate(base.getDate() + periodOffset * 14);
+    const periodEnd = new Date(periodStart); periodEnd.setDate(periodStart.getDate() + 13);
 
     return {
       start: periodStart.toISOString().split('T')[0],
       end: periodEnd.toISOString().split('T')[0],
-      label: 'Pay Period: ' +
-             periodStart.toISOString().split('T')[0] + ' – ' + periodEnd.toISOString().split('T')[0]
+      label: 'Período de pago: ' + periodStart.toISOString().split('T')[0] + ' – ' + periodEnd.toISOString().split('T')[0]
     };
   }
 
-  window.addEventListener('load', () => {
-    const period = getCurrentPayPeriod();
-    const label = document.getElementById("payPeriodLabel");
-    if (label) label.textContent = period.label;
-
-    let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
-    let changed = false;
-    history.forEach(entry => {
-      const parsed = new Date(entry.date);
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(entry.date) && !isNaN(parsed.getTime())) {
-        const iso = parsed.toISOString().split('T')[0];
-        entry.date = iso;
-        changed = true;
-      }
-    });
-    if (changed) {
-      localStorage.setItem('trimHistory', JSON.stringify(history));
-    }
-    updateSessionTable();
-    updateTrackerTotalDisplay();
-  });
-</script>
-
-<script>
-  document.getElementById('import-tracker-total').addEventListener('click', () => {
+  function updateTrackerDailyTotal() {
     const todayISO = new Date().toISOString().split('T')[0];
     const trackerTotal = localStorage.getItem('trimTrackerDailyTotal-' + todayISO);
-    if (trackerTotal) {
-      document.getElementById('grams').value = trackerTotal;
-      alert("Imported " + trackerTotal + "g from Trim Tracker.");
-    } else {
-      alert("No se encontró un total del Trim Tracker para hoy.");
-    }
-    updateTrackerTotalDisplay();
-  });
-</script>
+    const el = document.getElementById('trackerDailyTotalDisplay');
+    if (!el) return;
 
-<script>
+    el.textContent = trackerTotal
+      ? "Total de hoy en Trim Tracker: " + trackerTotal + "g"
+      : "Total de hoy en Trim Tracker: 0g";
+  }
+
   function clearCurrentPayPeriod() {
-    const confirmMsg = "¿Estás seguro de que deseas borrar todas las entradas del período de pago actual?";
+    const confirmMsg = "¿Seguro que quieres borrar todas las entradas del período de pago actual?";
     if (!confirm(confirmMsg)) return;
 
     const period = getCurrentPayPeriod();
@@ -525,12 +543,32 @@
       d.setHours(0, 0, 0, 0);
       return d < periodStart || d > periodEnd;
     });
+
     localStorage.setItem('trimHistory', JSON.stringify(history));
     updateSessionTable();
   }
-</script>
 
-<script>
+  function clearAllPastPayPeriods() {
+    const confirmMsg = "¿Seguro que quieres borrar TODOS los períodos de pago pasados? Esto no se puede deshacer.";
+    if (!confirm(confirmMsg)) return;
+
+    let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+
+    const current = getCurrentPayPeriod();
+    const currentStart = new Date(current.start);
+    const currentEnd = new Date(current.end);
+    currentEnd.setHours(23, 59, 59, 999);
+
+    history = history.filter(entry => {
+      const d = new Date(entry.date);
+      d.setHours(0, 0, 0, 0);
+      return d >= currentStart && d <= currentEnd;
+    });
+
+    localStorage.setItem('trimHistory', JSON.stringify(history));
+    updateSessionTable();
+  }
+
   function downloadCSV() {
     const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
     if (history.length === 0) {
@@ -557,9 +595,7 @@
     link.click();
     document.body.removeChild(link);
   }
-</script>
 
-<script>
   function importCSV(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -576,10 +612,7 @@
         if (!trimmedLine) continue;
 
         const columns = trimmedLine.split(',');
-        if (columns.length < 3) {
-          errorCount++;
-          continue;
-        }
+        if (columns.length < 3) { errorCount++; continue; }
 
         const date = columns[0].trim();
         const grams = parseFloat(columns[1].trim());
@@ -593,7 +626,7 @@
       }
 
       if (imported.length === 0 && errorCount > 0) {
-        alert("Archivo CSV inválido o vacío. No se importaron entradas válidas.");
+        alert("Archivo CSV inválido o vacío. No se importó nada válido.");
         return;
       }
       if (imported.length === 0 && errorCount === 0) {
@@ -606,18 +639,15 @@
       localStorage.setItem('trimHistory', JSON.stringify(history));
       updateSessionTable();
 
-      let successMsg = `Import completed. ${imported.length} entry(s) imported.`;
-      if (errorCount > 0) {
-        successMsg += ` ${errorCount} invalid row(s) skipped.`;
-      }
+      let successMsg = `Importación lista. ${imported.length} entrada(s) importada(s).`;
+      if (errorCount > 0) successMsg += ` ${errorCount} fila(s) inválida(s) se omitieron.`;
       alert(successMsg);
     };
+
     reader.readAsText(file);
     event.target.value = '';
   }
-</script>
 
-<script>
   function groupByPayPeriod(history) {
     const currentPeriod = getCurrentPayPeriod();
     const currentStart = new Date(currentPeriod.start);
@@ -636,9 +666,7 @@
       } else if (entryDate < currentStart) {
         const period = getPayPeriodForDate(entryDate);
         const key = period.start;
-        if (!pastPeriodGroups[key]) {
-          pastPeriodGroups[key] = { label: period.label, entries: [] };
-        }
+        if (!pastPeriodGroups[key]) pastPeriodGroups[key] = { label: period.label, entries: [] };
         pastPeriodGroups[key].entries.push([entry, index]);
       }
     });
@@ -646,26 +674,23 @@
     const grouped = {};
     grouped[currentPeriod.start] = { label: currentPeriod.label, entries: currentPeriodEntries };
 
-    const sortedPastKeys = Object.keys(pastPeriodGroups).sort((a, b) => new Date(b) - new Date(a));
-    sortedPastKeys.forEach(key => {
-      grouped[key] = pastPeriodGroups[key];
-    });
+    Object.keys(pastPeriodGroups)
+      .sort((a, b) => new Date(b) - new Date(a))
+      .forEach(key => grouped[key] = pastPeriodGroups[key]);
 
     return grouped;
   }
-</script>
 
-<script>
   function updateSessionTable() {
     const history = JSON.parse(localStorage.getItem('trimHistory')) || [];
     const tbody = document.querySelector('#sessionTable tbody');
     if (!tbody) return;
+
     tbody.innerHTML = '';
     let totalBonusPay = 0;
 
     const grouped = groupByPayPeriod(history);
     const currentPeriod = getCurrentPayPeriod();
-
     const currentEntries = grouped[currentPeriod.start]?.entries || [];
 
     currentEntries.forEach(([entry, index]) => {
@@ -690,21 +715,22 @@
         const entry = pair[0];
         return sum + parseFloat(entry.bonusPay || 0);
       }, 0);
-      const amountHTML = `<span class="past-period-amount">$${periodTotal.toFixed(2)}</span>`;
 
       const header = document.createElement('div');
       header.className = 'past-period-header';
+      header.dataset.total = periodTotal.toFixed(2);
 
-      const setHeader = (open) => {
-        header.innerHTML = `<span>${group.label} ${open ? '[-]' : '[+]'}</span>${amountHTML}`;
-      };
-
-      setHeader(false);
+      header.innerHTML = `
+        <span class="past-period-label">${group.label}</span>
+        <span class="past-period-total">$${header.dataset.total}</span>
+        <span class="toggle-indicator">[+]</span>
+      `;
 
       header.addEventListener('click', function () {
         const content = this.nextElementSibling;
         const open = content.classList.toggle('open');
-        setHeader(open);
+        const ind = this.querySelector('.toggle-indicator');
+        if (ind) ind.textContent = open ? '[-]' : '[+]';
       });
 
       const content = document.createElement('div');
@@ -716,7 +742,7 @@
           <td contenteditable="true" onblur="editDate(${index}, this)">${entry.date}</td>
           <td contenteditable="true" onblur="editGrams(${index}, this)">${entry.grams}</td>
           <td>$${parseFloat(entry.bonusPay).toFixed(2)}</td>
-          <td><button onclick="deleteEntry(${index})" class="delete-button">Delete</button></td>`;
+          <td><button onclick="deleteEntry(${index})" class="delete-button">Eliminar</button></td>`;
         content.appendChild(row);
       });
 
@@ -736,9 +762,7 @@
       updateSessionTable();
     }
   }
-</script>
 
-<script>
   function editDate(index, td) {
     let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
     const updatedDate = td.textContent.trim();
@@ -748,10 +772,53 @@
       localStorage.setItem('trimHistory', JSON.stringify(history));
       updateSessionTable();
     } else {
-      alert("Please enter a valid date format: YYYY-MM-DD");
+      alert("Por favor usa el formato de fecha: YYYY-MM-DD");
       td.textContent = history[index].date;
     }
   }
+
+  // ✅ Safe wiring on load (igual que el inglés)
+  window.addEventListener('load', () => {
+    const period = getCurrentPayPeriod();
+    const label = document.getElementById("payPeriodLabel");
+    if (label) label.textContent = period.label;
+
+    // Normaliza fechas guardadas si vienen raras
+    let history = JSON.parse(localStorage.getItem('trimHistory')) || [];
+    let changed = false;
+    history.forEach(entry => {
+      const parsed = new Date(entry.date);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(entry.date) && !isNaN(parsed.getTime())) {
+        entry.date = parsed.toISOString().split('T')[0];
+        changed = true;
+      }
+    });
+    if (changed) localStorage.setItem('trimHistory', JSON.stringify(history));
+
+    restoreHourlyInputs();
+    wireHourlyAutosave();
+    updateSessionTable();
+    updateTrackerDailyTotal();
+
+    const section = document.getElementById("payCalcSection");
+    const indicator = document.getElementById("payCalcIndicator");
+    if (section && indicator) indicator.textContent = (section.style.display === "none") ? "[+]" : "[-]";
+
+    const importBtn = document.getElementById('import-tracker-total');
+    if (importBtn) {
+      importBtn.addEventListener('click', () => {
+        const todayISO = new Date().toISOString().split('T')[0];
+        const trackerTotal = localStorage.getItem('trimTrackerDailyTotal-' + todayISO);
+        if (trackerTotal) {
+          document.getElementById('grams').value = trackerTotal;
+          alert("Se importaron " + trackerTotal + "g del Trim Tracker.");
+        } else {
+          alert("No se encontró el total del Trim Tracker para hoy.");
+        }
+        updateTrackerDailyTotal();
+      });
+    }
+  });
 </script>
 
 </body>
